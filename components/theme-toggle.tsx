@@ -15,9 +15,11 @@ const themes: { id: Theme; icon: React.ReactNode; label: string }[] = [
 export const ThemeToggle = () => {
     const [theme, setTheme] = useState<Theme>("light");
     const [isOpen, setIsOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     // Load theme from localStorage on mount
     useEffect(() => {
+        setMounted(true);
         const saved = localStorage.getItem("theme") as Theme;
         if (saved && ["light", "dark", "autumn"].includes(saved)) {
             setTheme(saved);
@@ -25,6 +27,13 @@ export const ThemeToggle = () => {
             document.documentElement.classList.add(saved);
         }
     }, []);
+
+    // Prevent hydration mismatch by rendering placeholder until mounted
+    if (!mounted) {
+        return (
+            <div className="p-2.5 rounded-xl bg-white/70 backdrop-blur-sm border border-green-100 shadow-sm w-9 h-9" />
+        );
+    }
 
     const handleThemeChange = (newTheme: Theme) => {
         setTheme(newTheme);
@@ -80,8 +89,8 @@ export const ThemeToggle = () => {
                                     key={t.id}
                                     onClick={() => handleThemeChange(t.id)}
                                     className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${theme === t.id
-                                            ? "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300"
-                                            : "text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-gray-700"
+                                        ? "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                                        : "text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-gray-700"
                                         }`}
                                 >
                                     <span className="text-green-500">{t.icon}</span>

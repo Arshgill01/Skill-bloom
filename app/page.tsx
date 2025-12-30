@@ -3,7 +3,7 @@ import { FloatingLeaves } from "@/components/floating-leaves";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-bloom-bg to-white relative overflow-hidden">
+    <main className="min-h-screen bg-gradient-to-br from-bloom-bg to-white dark:from-bloom-bg dark:to-gray-900 relative overflow-hidden transition-colors duration-300">
       {/* Floating Leaves Animation */}
       <FloatingLeaves />
 

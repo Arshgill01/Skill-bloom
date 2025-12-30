@@ -12,6 +12,30 @@
   --foreground: var(--bloom-text);
 }
 
+/* Dark Theme */
+.dark {
+  --bloom-bg: #1A2F1A;
+  --bloom-text: #E8F5E9;
+  --bloom-primary: #2E7D32;
+  --bloom-secondary: #880E4F;
+  --bloom-accent: #FFD54F;
+  
+  --background: var(--bloom-bg);
+  --foreground: var(--bloom-text);
+}
+
+/* Autumn Theme */
+.autumn {
+  --bloom-bg: #FFF8E1;
+  --bloom-text: #5D4037;
+  --bloom-primary: #FFAB91;
+  --bloom-secondary: #A1887F;
+  --bloom-accent: #FFE082;
+  
+  --background: var(--bloom-bg);
+  --foreground: var(--bloom-text);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

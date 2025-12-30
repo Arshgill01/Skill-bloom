@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
 interface Leaf {
@@ -13,22 +13,24 @@ interface Leaf {
     type: "leaf" | "petal";
 }
 
+// Deterministic pseudo-random based on seed (avoids hydration mismatch)
+const seededRandom = (seed: number): number => {
+    const x = Math.sin(seed * 9999) * 10000;
+    return x - Math.floor(x);
+};
+
+// Pre-computed static leaf data to avoid hydration issues
+const leaves: Leaf[] = Array.from({ length: 12 }, (_, i) => ({
+    id: i,
+    x: 5 + seededRandom(i * 1) * 90,
+    size: 12 + seededRandom(i * 2) * 16,
+    duration: 15 + seededRandom(i * 3) * 20,
+    delay: seededRandom(i * 4) * -20,
+    rotation: seededRandom(i * 5) * 360,
+    type: seededRandom(i * 6) > 0.3 ? "leaf" : "petal",
+}));
+
 export const FloatingLeaves = () => {
-    const leaves = useMemo<Leaf[]>(() => {
-        const items: Leaf[] = [];
-        for (let i = 0; i < 12; i++) {
-            items.push({
-                id: i,
-                x: 5 + Math.random() * 90, // Random horizontal position (%)
-                size: 12 + Math.random() * 16, // 12-28px
-                duration: 15 + Math.random() * 20, // 15-35s per cycle
-                delay: Math.random() * -20, // Stagger start
-                rotation: Math.random() * 360,
-                type: Math.random() > 0.3 ? "leaf" : "petal",
-            });
-        }
-        return items;
-    }, []);
 
     return (
         <div
