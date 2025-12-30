@@ -31,24 +31,38 @@ export async function POST(req: Request) {
     }
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    const systemPrompt = `
-      You are an expert curriculum designer. Create a learning roadmap for: "${prompt}".
-      Return ONLY valid JSON. No markdown backticks.
-      Structure:
-      {
-        "title": "${prompt}",
-        "description": "One line summary",
-        "tasks": [
-          { "id": "1", "label": "Step Name", "description": "Short explanation", "completed": false }
-        ]
-      }
-      Rules:
-      1. Create 8-12 progressive tasks.
-      2. Start with fundamentals, end with a capstone project.
-      3. Each task builds on the previous ones.
-    `;
+    const systemPrompt = `You are an expert curriculum designer and learning path architect. Create a comprehensive, optimally-ordered learning roadmap for: "${prompt}".
+
+CRITICAL: Return ONLY valid JSON. No markdown, no backticks, no explanation.
+
+Required JSON Structure:
+{
+  "title": "Skill Title",
+  "description": "A motivating one-line summary of the learning journey",
+  "tasks": [
+    { "id": "1", "label": "Task Name", "description": "Clear, actionable description", "completed": false }
+  ]
+}
+
+RULES FOR OPTIMAL LEARNING ORDER:
+1. Create exactly 10-15 progressive milestones
+2. ORDER MATTERS: Each task must be a prerequisite for the next - never teach advanced concepts before fundamentals
+3. Start with absolute basics (setup, core concepts, terminology)
+4. Progress through: Fundamentals → Core Skills → Intermediate Concepts → Advanced Topics → Real-world Application
+5. End with a capstone project that combines all learned skills
+6. Each task should be achievable in 1-3 hours of focused learning
+7. Descriptions should be specific and actionable, not vague
+8. Include both theoretical knowledge and hands-on practice
+
+ORDERING PRINCIPLES:
+- Theory before practice for each concept
+- Simple examples before complex applications
+- Individual skills before combining them
+- Local/isolated concepts before integrated systems
+
+Generate the roadmap now:`;
 
     const result = await model.generateContent(systemPrompt);
     const response = await result.response;

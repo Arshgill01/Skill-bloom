@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sprout, Loader2, Sparkles, TreeDeciduous } from "lucide-react";
 import { GrowthContainer } from "@/components/tree/growth-container";
-import { FeatureCards } from "@/components/feature-cards";
 
 interface Task {
     id: string;
@@ -135,9 +134,6 @@ export const RoadmapGenerator = () => {
                                 </button>
                             ))}
                         </div>
-
-                        {/* Feature Cards Section */}
-                        <FeatureCards />
                     </motion.div>
                 ) : (
                     <motion.div
