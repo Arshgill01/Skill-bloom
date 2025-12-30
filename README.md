@@ -1,4 +1,4 @@
-<img width="1680" height="1050" alt="Screenshot 2025-12-31 at 12 29 06 AM" src="https://github.com/user-attachments/assets/425c1c3a-360e-4e9a-a114-6e349292c39e" /># 🌱 SkillBloom
+# 🌱 SkillBloom
 
 <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1200&h=400&auto=format&fit=crop" alt="SkillBloom Hero" width="100%" style="border-radius: 12px; object-fit: cover; height: 300px;" />
 
@@ -41,7 +41,7 @@ This project was built with a modern, high-performance stack:
     npm install
     # or
     yarn install
-    ```<img width="1680" height="1050" alt="Screenshot 2025-12-31 at 12 29 06 AM" src="https://github.com/user-attachments/assets/f98828d4-f763-4618-a53b-5e5193648a2b" />
+    ```
 
 
 3.  **Set up Environment Variables**
@@ -63,8 +63,7 @@ This project was built with a modern, high-performance stack:
 
 | The Garden | Dark Mode | Completion |
 | :---: | :---: | :---: |
-| ![Garden](<img width="1680" height="1050" alt="Screenshot 2025-12-31 at 12 29 06 AM" src="https://github.com/user-attachments/assets/d10a8678-f356-4e80-b552-74ad9c3907fe" />
-) | ![Dark Mode](https://via.placeholder.com/300x200?text=Dark+Mode) | ![Completion](https://via.placeholder.com/300x200?text=Success) |
+| <img src="https://github.com/user-attachments/assets/f98828d4-f763-4618-a53b-5e5193648a2b" alt="The Garden" width="100%" /> | <img src="https://github.com/user-attachments/assets/d10a8678-f356-4e80-b552-74ad9c3907fe" alt="Dark Mode" width="100%" /> | <img src="https://github.com/user-attachments/assets/425c1c3a-360e-4e9a-a114-6e349292c39e" alt="Quest Complete" width="100%" /> |
 
 ## 🤝 Contributing
 
