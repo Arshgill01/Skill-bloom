@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌱 SkillBloom
 
-## Getting Started
+![SkillBloom Hero](https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2560&auto=format&fit=crop)
 
-First, run the development server:
+> **Turn your learning journey into a beautiful, growing digital garden.**  
+> SkillBloom uses AI to generate personalized learning roadmaps and visualizes your progress as a unique, growing tree.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Inspiration
+Learning creates growth, but traditional to-do lists feel stagnant. We wanted to make the act of learning feel alive. **SkillBloom** gamifies self-improvement by transforming abstract progress into something tangible and beautiful—a living tree that grows, branches, and blooms as you master new skills.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-   **🧠 AI-Powered Roadmaps**: Powered by **Google Gemini 2.0 Pro**, SkillBloom instantly generates comprehensive, step-by-step learning paths for *any* skill.
+-   **🌳 Dynamic Growth Visualization**: Watch your skill tree grow from a seedling to a majestic oak. Every completed task adds meaningful growth to your tree.
+-   **💾 Auto-Save Persistence**: Your journey is safe! Progress is automatically saved locally, so you can leave and come back anytime.
+-   **🎯 Smart Resources**: Don't just list tasks—learn them. Each step comes with one-click access to the best curated search queries and resources.
+-   **🎨 Beautiful Theming**: Experience your garden in different seasons with Light, Dark, and Autumn modes.
+-   **📤 Social Sharing**: Proud of your growth? Share a generated summary of your tree's progress with friends.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+This project was built with a modern, high-performance stack:
 
-To learn more about Next.js, take a look at the following resources:
+-   **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+-   **AI Model**: [Google Gemini API](https://ai.google.dev/) (`gemini-2.0-pro-exp-02-05`)
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+-   **Animations**: [Framer Motion](https://www.framer.com/motion/) (Complex SVG path animations)
+-   **Icons**: [Lucide React](https://lucide.dev/)
+-   **State & Persistence**: React Hooks + LocalStorage API
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🏃‍♂️ Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/skill-bloom.git
+    cd skill-bloom
+    ```
 
-## Deploy on Vercel
+2.  **Install dependencies**
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3.  **Set up Environment Variables**
+    Create a `.env.local` file in the root directory:
+    ```env
+    GEMINI_API_KEY=your_google_gemini_api_key_here
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4.  **Run the development server**
+    ```bash
+    npm run dev
+    ```
+
+5.  Open [http://localhost:3000](http://localhost:3000) to start your garden!
+
+## 📸 Screenshots
+
+*(Add your demo screenshots here!)*
+
+| The Garden | Dark Mode | Completion |
+| :---: | :---: | :---: |
+| ![Garden](https://via.placeholder.com/300x200?text=Skill+Tree) | ![Dark Mode](https://via.placeholder.com/300x200?text=Dark+Mode) | ![Completion](https://via.placeholder.com/300x200?text=Success) |
+
+## 🤝 Contributing
+
+We welcome contributions! Feel free to push a PR if you have ideas for new tree types (🌴 Pine? 🌵 Cactus?) or features.
+
+## 📄 License
+
+MIT License - grow freely!
