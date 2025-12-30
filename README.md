@@ -63,7 +63,7 @@ This project was built with a modern, high-performance stack:
 
 | The Garden | Dark Mode | Completion |
 | :---: | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/088dba59-5a5e-451c-83b4-bd26fa7c60b7" alt="The Garden" width="100%" /> | <img src="https://github.com/user-attachments/assets/d10a8678-f356-4e80-b552-74ad9c3907fe" alt="Dark Mode" width="100%" /> | <img src="https://github.com/user-attachments/assets/425c1c3a-360e-4e9a-a114-6e349292c39e" alt="Quest Complete" width="100%" /> |
+| <img src="https://github.com/user-attachments/assets/088dba59-5a5e-451c-83b4-bd26fa7c60b7" alt="The Garden" width="100%" /> | <img src="https://github.com/user-attachments/assets/d10a8678-f356-4e80-b552-74ad9c3907fe" alt="Dark Mode" width="100%" /> | <img src="https://github.com/user-attachments/assets/882c9f46-3131-4d70-8189-881116dedee5" alt="Quest Complete" width="100%" /> |
 
 ## 🤝 Contributing
 
