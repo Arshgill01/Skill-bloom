@@ -142,7 +142,8 @@ const Card = ({
     onToggle,
     isExpanded,
     setExpanded,
-    state
+    state,
+    playPop
 }: {
     task: Task;
     index: number;

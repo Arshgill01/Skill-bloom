@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+
 import { DeciduousConfig } from "./variants/deciduous-tree";
 import { ConiferConfig } from "./variants/conifer-tree";
 import { TropicalConfig } from "./variants/tropical-tree";

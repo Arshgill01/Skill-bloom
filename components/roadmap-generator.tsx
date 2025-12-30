@@ -68,8 +68,9 @@ export const RoadmapGenerator = () => {
             try {
                 const json = JSON.parse(text);
                 saveData(json);
-            } catch (parseError) {
-                console.error("Failed to parse JSON:", text);
+            } catch {
+                console.error("Failed to parse data");
+                // Fallback to non-persisted state if load fails
                 alert("Something went wrong with the AI response. Check console for details.");
             }
         } catch (err) {

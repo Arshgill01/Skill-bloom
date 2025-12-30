@@ -67,7 +67,8 @@ export const TreeCanvas = ({ nodes, edges }: TreeCanvasProps) => {
 
         // Calculate positions
         const CANVAS_WIDTH = 800;
-        const CANVAS_HEIGHT = 600;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const CANVAS_HEIGHT = 800;
         const VERTICAL_SPACING = 120;
         const START_Y = 80;
 

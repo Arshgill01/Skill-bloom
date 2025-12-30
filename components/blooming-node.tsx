@@ -1,10 +1,9 @@
-
 "use client";
 
 import React, { memo } from "react";
 import { Handle, Position } from "reactflow";
 import { motion, Variants } from "framer-motion";
-import { Check, Lock, Loader2 } from "lucide-react";
+import { Check, Lock } from "lucide-react";
 import clsx from "clsx";
 
 export type NodeStatus = "locked" | "unlocked" | "completed" | "generating";
