@@ -1,430 +1,218 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { DeciduousConfig } from "./variants/deciduous-tree";
+import { ConiferConfig } from "./variants/conifer-tree";
+import { TropicalConfig } from "./variants/tropical-tree";
+import { StalkConfig } from "./variants/stalk-tree";
+import { DroopingConfig } from "./variants/drooping-tree";
+import { SucculentConfig } from "./variants/succulent-tree";
 
 // ============== TREE TYPE DEFINITIONS ==============
 
-export type TreeType = "oak" | "pine" | "palm" | "cherry" | "bamboo" | "willow";
+export type TreeArchitecture = "deciduous" | "conifer" | "tropical" | "stalk" | "drooping" | "succulent";
 
-// ============== SKILL TO TREE MAPPING ==============
+export type TreeVariant =
+    | "oak" | "maple" | "birch" | "cherry" | "baobab" // Deciduous
+    | "pine" | "spruce" // Conifer
+    | "palm" | "coconut" // Tropical
+    | "bamboo" // Stalk
+    | "willow" // Drooping
+    | "cactus" | "agave"; // Succulent
 
-const skillTreeMap: Record<string, TreeType> = {
-    // Oak - Web/Frontend Technologies
-    "react": "oak",
-    "angular": "oak",
-    "vue": "oak",
-    "typescript": "oak",
-    "javascript": "oak",
-    "html": "oak",
-    "css": "oak",
-    "nextjs": "oak",
-    "svelte": "oak",
-    "tailwind": "oak",
-
-    // Pine - Backend/Systems Languages
-    "python": "pine",
-    "go": "pine",
-    "rust": "pine",
-    "c++": "pine",
-    "java": "pine",
-    "c#": "pine",
-    "kotlin": "pine",
-    "scala": "pine",
-    "ruby": "pine",
-    "php": "pine",
-
-    // Palm - Design/Creative
-    "design": "palm",
-    "ui/ux": "palm",
-    "ux": "palm",
-    "ui": "palm",
-    "figma": "palm",
-    "photoshop": "palm",
-    "illustrator": "palm",
-    "sketch": "palm",
-    "graphic design": "palm",
-    "web design": "palm",
-
-    // Cherry Blossom - Languages
-    "japanese": "cherry",
-    "korean": "cherry",
-    "mandarin": "cherry",
-    "chinese": "cherry",
-    "spanish": "cherry",
-    "french": "cherry",
-    "german": "cherry",
-    "italian": "cherry",
-    "portuguese": "cherry",
-    "arabic": "cherry",
-
-    // Bamboo - Physical/Wellness
-    "yoga": "bamboo",
-    "meditation": "bamboo",
-    "martial arts": "bamboo",
-    "dance": "bamboo",
-    "music": "bamboo",
-    "guitar": "bamboo",
-    "piano": "bamboo",
-    "fitness": "bamboo",
-    "cooking": "bamboo",
-    "chess": "bamboo",
-
-    // Willow - Humanities/Soft Skills
-    "writing": "willow",
-    "poetry": "willow",
-    "philosophy": "willow",
-    "history": "willow",
-    "psychology": "willow",
-    "leadership": "willow",
-    "communication": "willow",
-    "public speaking": "willow",
-    "marketing": "willow",
-    "economics": "willow",
-};
-
-export const getTreeType = (skill: string): TreeType => {
-    const normalized = skill.toLowerCase().trim();
-
-    // Direct match
-    if (skillTreeMap[normalized]) {
-        return skillTreeMap[normalized];
-    }
-
-    // Partial match - check if skill contains a keyword
-    for (const [key, treeType] of Object.entries(skillTreeMap)) {
-        if (normalized.includes(key) || key.includes(normalized)) {
-            return treeType;
-        }
-    }
-
-    // Default to oak
-    return "oak";
-};
-
-// ============== TREE COLORS ==============
-
-export const treeColors: Record<TreeType, { primary: string; secondary: string; accent: string }> = {
-    oak: { primary: "#4CAF50", secondary: "#81C784", accent: "#2E7D32" },
-    pine: { primary: "#1B5E20", secondary: "#388E3C", accent: "#0D3F0D" },
-    palm: { primary: "#8BC34A", secondary: "#AED581", accent: "#689F38" },
-    cherry: { primary: "#F8BBD0", secondary: "#F48FB1", accent: "#EC407A" },
-    bamboo: { primary: "#66BB6A", secondary: "#A5D6A7", accent: "#43A047" },
-    willow: { primary: "#9CCC65", secondary: "#C5E1A5", accent: "#7CB342" },
-};
-
-// ============== MINI TREE COMPONENTS ==============
-
-interface MiniTreeProps {
-    size?: number;
-    className?: string;
+export interface TreeConfig {
+    name: string;
+    emoji: string;
+    architecture: TreeArchitecture;
+    config: DeciduousConfig | ConiferConfig | TropicalConfig | StalkConfig | DroopingConfig | SucculentConfig;
 }
 
-// Oak Tree - Rounded canopy
-export const OakMini = ({ size = 60, className = "" }: MiniTreeProps) => (
-    <motion.svg
-        width={size}
-        height={size}
-        viewBox="0 0 60 60"
-        className={className}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-    >
-        {/* Trunk */}
-        <motion.rect
-            x="26" y="35" width="8" height="20" rx="2"
-            fill="#6D4C41"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            style={{ transformOrigin: "center bottom" }}
-        />
-        {/* Canopy */}
-        <motion.ellipse
-            cx="30" cy="25" rx="22" ry="18"
-            fill="#4CAF50"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.1 }}
-        />
-        <motion.ellipse
-            cx="30" cy="22" rx="16" ry="13"
-            fill="#66BB6A"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.15 }}
-        />
-    </motion.svg>
-);
+// ============== VARIANT CONFIGURATIONS ==============
 
-// Pine Tree - Triangular conifer
-export const PineMini = ({ size = 60, className = "" }: MiniTreeProps) => (
-    <motion.svg
-        width={size}
-        height={size}
-        viewBox="0 0 60 60"
-        className={className}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-    >
-        {/* Trunk */}
-        <motion.rect
-            x="26" y="45" width="8" height="12" rx="1"
-            fill="#5D4037"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            style={{ transformOrigin: "center bottom" }}
-        />
-        {/* Layers */}
-        <motion.polygon
-            points="30,5 50,25 10,25"
-            fill="#1B5E20"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            style={{ transformOrigin: "center bottom" }}
-            transition={{ delay: 0.2 }}
-        />
-        <motion.polygon
-            points="30,15 52,35 8,35"
-            fill="#2E7D32"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            style={{ transformOrigin: "center bottom" }}
-            transition={{ delay: 0.1 }}
-        />
-        <motion.polygon
-            points="30,25 54,48 6,48"
-            fill="#388E3C"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            style={{ transformOrigin: "center bottom" }}
-        />
-    </motion.svg>
-);
+export const TREE_VARIANTS: Record<string, TreeConfig> = {
+    // --- Deciduous Variants ---
+    oak: {
+        name: "Oak",
+        emoji: "🌳",
+        architecture: "deciduous",
+        config: {
+            leafColor: ["#4CAF50", "#66BB6A", "#81C784"],
+            trunkColor: ["#4E342E", "#6D4C41", "#8D6E63"],
+            canopyShape: "round",
+            trunkWidthScale: 1.0,
+        } as DeciduousConfig
+    },
+    maple: {
+        name: "Maple",
+        emoji: "🍁",
+        architecture: "deciduous",
+        config: {
+            leafColor: ["#FF5722", "#E64A19", "#BF360C", "#FFAB91"], // Fall colors
+            trunkColor: ["#3E2723", "#4E342E", "#5D4037"],
+            trunkTexture: "#3E2723",
+            canopyShape: "round",
+            trunkWidthScale: 0.9,
+        } as DeciduousConfig
+    },
+    birch: {
+        name: "Birch",
+        emoji: "🌳",
+        architecture: "deciduous",
+        config: {
+            leafColor: ["#FFEB3B", "#FDD835", "#FBC02D"], // Yellow/Gold leaves
+            trunkColor: ["#F5F5F5", "#EEEEEE", "#E0E0E0"], // White trunk
+            trunkTexture: "#212121", // Dark markings
+            canopyShape: "oval",
+            trunkWidthScale: 0.7, // Slender
+        } as DeciduousConfig
+    },
+    cherry: {
+        name: "Cherry Blossom",
+        emoji: "🌸",
+        architecture: "deciduous",
+        config: {
+            leafColor: ["#F8BBD0", "#F48FB1", "#EC407A"], // Pink
+            trunkColor: ["#5D4037", "#6D4C41", "#795548"],
+            canopyShape: "spread",
+            trunkWidthScale: 0.8,
+            flowerColor: "#FFF",
+        } as DeciduousConfig
+    },
+    baobab: {
+        name: "Baobab",
+        emoji: "🌳", // No better emoji
+        architecture: "deciduous",
+        config: {
+            leafColor: ["#33691E", "#558B2F", "#689F38"],
+            trunkColor: ["#8D6E63", "#A1887F", "#BCAAA4"],
+            canopyShape: "spread",
+            trunkWidthScale: 2.0, // Thicc
+        } as DeciduousConfig
+    },
 
-// Palm Tree - Tropical fronds
-export const PalmMini = ({ size = 60, className = "" }: MiniTreeProps) => (
-    <motion.svg
-        width={size}
-        height={size}
-        viewBox="0 0 60 60"
-        className={className}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-    >
-        {/* Trunk - curved */}
-        <motion.path
-            d="M30 55 Q 28 40, 30 25"
-            stroke="#8D6E63"
-            strokeWidth="6"
-            fill="none"
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-        />
-        {/* Fronds */}
-        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
-            <motion.ellipse
-                key={i}
-                cx="30"
-                cy="18"
-                rx="3"
-                ry="15"
-                fill="#8BC34A"
-                transform={`rotate(${angle} 30 25)`}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2 + i * 0.03 }}
-            />
-        ))}
-        <motion.circle cx="30" cy="25" r="4" fill="#AED581" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3 }} />
-    </motion.svg>
-);
+    // --- Conifer Variants ---
+    pine: {
+        name: "Pine",
+        emoji: "🌲",
+        architecture: "conifer",
+        config: {
+            foliageColor: ["#1B5E20", "#2E7D32", "#388E3C"],
+            trunkColor: "#3E2723",
+            widthScale: 1.0,
+        } as ConiferConfig
+    },
+    spruce: {
+        name: "Blue Spruce",
+        emoji: "🌲",
+        architecture: "conifer",
+        config: {
+            foliageColor: ["#546E7A", "#607D8B", "#78909C"], // Blue-ish
+            trunkColor: "#455A64",
+            widthScale: 1.2,
+            snow: true,
+        } as ConiferConfig
+    },
 
-// Cherry Blossom - Pink flowers
-export const CherryMini = ({ size = 60, className = "" }: MiniTreeProps) => (
-    <motion.svg
-        width={size}
-        height={size}
-        viewBox="0 0 60 60"
-        className={className}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-    >
-        {/* Trunk */}
-        <motion.path
-            d="M30 55 Q 28 45, 25 35 Q 22 30, 20 25"
-            stroke="#5D4037"
-            strokeWidth="5"
-            fill="none"
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-        />
-        <motion.path
-            d="M30 35 Q 35 30, 40 25"
-            stroke="#5D4037"
-            strokeWidth="4"
-            fill="none"
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ delay: 0.1 }}
-        />
-        {/* Blossoms */}
-        {[[18, 20], [25, 15], [35, 18], [42, 22], [20, 28], [38, 12]].map(([cx, cy], i) => (
-            <motion.g key={i}>
-                <motion.circle
-                    cx={cx}
-                    cy={cy}
-                    r="6"
-                    fill="#F8BBD0"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.2 + i * 0.05, type: "spring" }}
-                />
-                <motion.circle
-                    cx={cx}
-                    cy={cy}
-                    r="2"
-                    fill="#FFEB3B"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.3 + i * 0.05 }}
-                />
-            </motion.g>
-        ))}
-    </motion.svg>
-);
+    // --- Tropical Variants ---
+    palm: {
+        name: "Palm",
+        emoji: "🌴",
+        architecture: "tropical",
+        config: {
+            trunkColor: "#795548",
+            frondColor: ["#64DD17", "#76FF03", "#B2FF59"],
+            curveDirection: 1,
+            hasCoconuts: false
+        } as TropicalConfig
+    },
+    coconut: {
+        name: "Coconut Palm",
+        emoji: "🥥",
+        architecture: "tropical",
+        config: {
+            trunkColor: "#5D4037",
+            frondColor: ["#33691E", "#558B2F", "#689F38"],
+            curveDirection: -1,
+            hasCoconuts: true
+        } as TropicalConfig
+    },
 
-// Bamboo - Tall stalks
-export const BambooMini = ({ size = 60, className = "" }: MiniTreeProps) => (
-    <motion.svg
-        width={size}
-        height={size}
-        viewBox="0 0 60 60"
-        className={className}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-    >
-        {/* Stalks */}
-        {[18, 30, 42].map((x, i) => (
-            <motion.g key={i}>
-                <motion.rect
-                    x={x - 3}
-                    y="10"
-                    width="6"
-                    height="48"
-                    rx="3"
-                    fill="#66BB6A"
-                    initial={{ scaleY: 0 }}
-                    animate={{ scaleY: 1 }}
-                    style={{ transformOrigin: "center bottom" }}
-                    transition={{ delay: i * 0.1 }}
-                />
-                {/* Segments */}
-                {[20, 32, 44].map((y, j) => (
-                    <motion.line
-                        key={j}
-                        x1={x - 3}
-                        y1={y}
-                        x2={x + 3}
-                        y2={y}
-                        stroke="#43A047"
-                        strokeWidth="2"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3 + i * 0.1 }}
-                    />
-                ))}
-                {/* Leaves */}
-                <motion.ellipse
-                    cx={x + 8}
-                    cy={15 + i * 3}
-                    rx="8"
-                    ry="3"
-                    fill="#A5D6A7"
-                    transform={`rotate(-30 ${x + 8} ${15 + i * 3})`}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.4 + i * 0.1 }}
-                />
-            </motion.g>
-        ))}
-    </motion.svg>
-);
+    // --- Stalk Variants ---
+    bamboo: {
+        name: "Bamboo",
+        emoji: "🎋",
+        architecture: "stalk",
+        config: {
+            stalkColor: "#8BC34A",
+            segmentColor: "#689F38",
+            leafColor: "#558B2F"
+        } as StalkConfig
+    },
 
-// Willow - Drooping branches
-export const WillowMini = ({ size = 60, className = "" }: MiniTreeProps) => (
-    <motion.svg
-        width={size}
-        height={size}
-        viewBox="0 0 60 60"
-        className={className}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-    >
-        {/* Trunk */}
-        <motion.rect
-            x="27" y="30" width="6" height="28" rx="2"
-            fill="#8D6E63"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            style={{ transformOrigin: "center bottom" }}
-        />
-        {/* Canopy base */}
-        <motion.ellipse
-            cx="30" cy="25" rx="18" ry="12"
-            fill="#9CCC65"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.1 }}
-        />
-        {/* Drooping branches */}
-        {[-20, -10, 0, 10, 20].map((offset, i) => (
-            <motion.path
-                key={i}
-                d={`M ${30 + offset} 28 Q ${30 + offset + offset / 4} 42, ${30 + offset + offset / 2} 52`}
-                stroke="#C5E1A5"
-                strokeWidth="3"
-                fill="none"
-                strokeLinecap="round"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ delay: 0.2 + i * 0.05 }}
-            />
-        ))}
-    </motion.svg>
-);
+    // --- Drooping Variants ---
+    willow: {
+        name: "Willow",
+        emoji: "🌿",
+        architecture: "drooping",
+        config: {
+            trunkColor: "#4E342E",
+            branchColor: "#8BC34A",
+            leafColor: "#9CCC65"
+        } as DroopingConfig
+    },
 
-// ============== TREE COMPONENT SELECTOR ==============
-
-export const MiniTree = ({ type, size = 60, className = "" }: { type: TreeType } & MiniTreeProps) => {
-    const trees = {
-        oak: OakMini,
-        pine: PineMini,
-        palm: PalmMini,
-        cherry: CherryMini,
-        bamboo: BambooMini,
-        willow: WillowMini,
-    };
-
-    const TreeComponent = trees[type];
-    return <TreeComponent size={size} className={className} />;
+    // --- Succulent Variants ---
+    cactus: {
+        name: "Cactus",
+        emoji: "🌵",
+        architecture: "succulent",
+        config: {
+            skinColor: "#43A047",
+            spineColor: "#FFF",
+            flowerColor: "#F48FB1"
+        } as SucculentConfig
+    },
+    agave: { // Re-using cactus logic roughly or just mapping to cactus for now
+        name: "Desert Blooms",
+        emoji: "🌵",
+        architecture: "succulent",
+        config: {
+            skinColor: "#00897B",
+            spineColor: "#E0F2F1",
+            flowerColor: "#FFEB3B"
+        } as SucculentConfig
+    },
 };
 
-// ============== TREE INFO ==============
+// ============== SELECTION LOGIC ==============
 
-export const treeInfo: Record<TreeType, { name: string; emoji: string }> = {
-    oak: { name: "Oak", emoji: "🌳" },
-    pine: { name: "Pine", emoji: "🌲" },
-    palm: { name: "Palm", emoji: "🌴" },
-    cherry: { name: "Cherry Blossom", emoji: "🌸" },
-    bamboo: { name: "Bamboo", emoji: "🎋" },
-    willow: { name: "Willow", emoji: "🌿" },
+export const getTreeConfig = (skill: string): TreeConfig => {
+    const normalized = skill.toLowerCase().trim();
+    const variantKeys = Object.keys(TREE_VARIANTS);
+
+    // 1. Direct/Partial Keyword Mapping
+    if (normalized.includes("pine") || normalized.includes("linux") || normalized.includes("rust") || normalized.includes("c++")) return TREE_VARIANTS.pine;
+    if (normalized.includes("spruce") || normalized.includes("snow") || normalized.includes("cold")) return TREE_VARIANTS.spruce;
+    if (normalized.includes("palm") || normalized.includes("beach") || normalized.includes("ui") || normalized.includes("design") || normalized.includes("figma")) return TREE_VARIANTS.palm;
+    if (normalized.includes("coconut")) return TREE_VARIANTS.coconut;
+    if (normalized.includes("cherry") || normalized.includes("japan") || normalized.includes("language") || normalized.includes("ruby")) return TREE_VARIANTS.cherry;
+    if (normalized.includes("maple") || normalized.includes("game") || normalized.includes("canada")) return TREE_VARIANTS.maple;
+    if (normalized.includes("birch") || normalized.includes("paper") || normalized.includes("doc")) return TREE_VARIANTS.birch;
+    if (normalized.includes("bamboo") || normalized.includes("zen") || normalized.includes("yoga") || normalized.includes("meditation")) return TREE_VARIANTS.bamboo;
+    if (normalized.includes("willow") || normalized.includes("cry") || normalized.includes("sad") || normalized.includes("py")) return TREE_VARIANTS.willow; // Python could be willow (snake like) or pine? 'py' matches python
+    if (normalized.includes("cactus") || normalized.includes("desert") || normalized.includes("hot") || normalized.includes("dry")) return TREE_VARIANTS.cactus;
+    if (normalized.includes("baobab")) return TREE_VARIANTS.baobab;
+    if (normalized.includes("oak") || normalized.includes("react") || normalized.includes("web") || normalized.includes("js")) return TREE_VARIANTS.oak;
+    if (normalized.includes("agave")) return TREE_VARIANTS.agave;
+
+    // 2. Generic fallback groups
+    if (normalized.includes("script") || normalized.includes("java")) return TREE_VARIANTS.oak;
+
+    // 3. Deterministic Hash
+    let hash = 0;
+    for (let i = 0; i < normalized.length; i++) {
+        hash = normalized.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math.abs(hash) % variantKeys.length;
+    return TREE_VARIANTS[variantKeys[index]];
 };

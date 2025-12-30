@@ -1,13 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  /* Fresh, Spring-like Palette */
-  --bloom-bg: #F1F8E9;         /* Very Light Green */
-  --bloom-text: #1B5E20;       /* Dark Green */
-  --bloom-primary: #A5D6A7;    /* Soft Green */
-  --bloom-secondary: #F8BBD0;  /* Soft Pink */
-  --bloom-accent: #FFF59D;     /* Soft Yellow for Pollen/Highlights */
-  
+  /* Fresh, Spring-like Palette (Updated to cooler Emerald tones) */
+  --bloom-bg: #ECFDF5;
+  /* Emerald 50 - Cooler/Fresher than previous yellow-green */
+  --bloom-text: #064E3B;
+  /* Emerald 900 */
+  --bloom-primary: #34D399;
+  /* Emerald 400 - Vibrant Spring Green */
+  --bloom-secondary: #F472B6;
+  /* Pink 400 - Clearer Pink */
+  --bloom-accent: #FDE047;
+  /* Yellow 300 - Bright Pollen */
+
+  /* Sky Gradients - Light (Spring/Mint) */
+  --sky-0-start: #E3F2FD;
+  --sky-0-mid: #F1F8E9;
+  --sky-0-end: #DCEDC8;
+  --sky-1-start: #B3E5FC;
+  --sky-1-mid: #E1F5FE;
+  --sky-1-end: #AED581;
+  --sky-2-start: #87CEEB;
+  --sky-2-mid: #C8E6C9;
+  --sky-2-end: #A5D6A7;
+
   --background: var(--bloom-bg);
   --foreground: var(--bloom-text);
 }
@@ -19,7 +35,21 @@
   --bloom-primary: #2E7D32;
   --bloom-secondary: #880E4F;
   --bloom-accent: #FFD54F;
-  
+
+  /* Sky Gradients - Dark (Starry Night - Tuned for deep emerald/black) */
+  --sky-0-start: #020617;
+  /* Very Dark Slate */
+  --sky-0-mid: #052e16;
+  /* Deep Emerald */
+  --sky-0-end: #064e3b;
+  /* Emerald 800 */
+  --sky-1-start: #0f172a;
+  --sky-1-mid: #14532d;
+  --sky-1-end: #166534;
+  --sky-2-start: #1e1b4b;
+  --sky-2-mid: #15803d;
+  --sky-2-end: #16a34a;
+
   --background: var(--bloom-bg);
   --foreground: var(--bloom-text);
 }
@@ -31,7 +61,18 @@
   --bloom-primary: #FFAB91;
   --bloom-secondary: #A1887F;
   --bloom-accent: #FFE082;
-  
+
+  /* Sky Gradients - Autumn (Sunset) */
+  --sky-0-start: #FFF3E0;
+  --sky-0-mid: #FFE0B2;
+  --sky-0-end: #D7CCC8;
+  --sky-1-start: #FFCCBC;
+  --sky-1-mid: #FFAB91;
+  --sky-1-end: #A1887F;
+  --sky-2-start: #FFAB91;
+  --sky-2-mid: #FF8A65;
+  --sky-2-end: #8D6E63;
+
   --background: var(--bloom-bg);
   --foreground: var(--bloom-text);
 }
@@ -44,7 +85,7 @@
   --color-bloom-primary: var(--bloom-primary);
   --color-bloom-secondary: var(--bloom-secondary);
   --color-bloom-accent: var(--bloom-accent);
-  
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

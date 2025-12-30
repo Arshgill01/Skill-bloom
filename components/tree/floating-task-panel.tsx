@@ -40,18 +40,18 @@ export const FloatingTaskPanel = ({ tasks, onToggle, progress }: FloatingTaskPan
             {/* Header - Always visible */}
             <motion.div
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 cursor-pointer overflow-hidden"
+                className="bg-white/90 dark:bg-black/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 dark:border-white/10 cursor-pointer overflow-hidden"
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
             >
                 <div className="p-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-bloom-primary to-bloom-text flex items-center justify-center text-white dark:text-bloom-text font-bold text-sm shadow-lg">
                             {completedCount}/{tasks.length}
                         </div>
                         <div>
-                            <div className="font-bold text-green-900 text-sm">Your Progress</div>
-                            <div className="text-xs text-green-600">{Math.round(progress)}% Complete</div>
+                            <div className="font-bold text-bloom-text text-sm">Your Progress</div>
+                            <div className="text-xs text-bloom-text/70">{Math.round(progress)}% Complete</div>
                         </div>
                     </div>
                     <motion.div
@@ -63,9 +63,9 @@ export const FloatingTaskPanel = ({ tasks, onToggle, progress }: FloatingTaskPan
                 </div>
 
                 {/* Progress bar */}
-                <div className="h-1.5 bg-green-100">
+                <div className="h-1.5 bg-bloom-primary/20">
                     <motion.div
-                        className="h-full bg-gradient-to-r from-green-400 to-emerald-500"
+                        className="h-full bg-gradient-to-r from-bloom-primary to-bloom-text"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ type: "spring", stiffness: 80 }}
@@ -80,7 +80,7 @@ export const FloatingTaskPanel = ({ tasks, onToggle, progress }: FloatingTaskPan
                         initial={{ opacity: 0, height: 0, marginTop: 0 }}
                         animate={{ opacity: 1, height: "auto", marginTop: 8 }}
                         exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                        className="bg-white/85 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 overflow-hidden"
+                        className="bg-white/85 dark:bg-black/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 dark:border-white/10 overflow-hidden"
                     >
                         <div className="max-h-[400px] overflow-y-auto p-2">
                             {tasks.map((task, index) => {
@@ -101,9 +101,9 @@ export const FloatingTaskPanel = ({ tasks, onToggle, progress }: FloatingTaskPan
                                         disabled={isLocked}
                                         className={clsx(
                                             "w-full text-left p-3 rounded-xl transition-all duration-200 group mb-1 last:mb-0 relative overflow-hidden",
-                                            isCompleted && "bg-green-50/80",
-                                            isActive && "bg-white hover:bg-green-50/50 ring-2 ring-green-400 ring-offset-1",
-                                            isLocked && "bg-gray-50/50 opacity-60 cursor-not-allowed"
+                                            isCompleted && "bg-bloom-primary/10",
+                                            isActive && "bg-white dark:bg-white/10 hover:bg-bloom-primary/5 ring-2 ring-bloom-primary ring-offset-1 dark:ring-offset-black",
+                                            isLocked && "bg-gray-50/50 dark:bg-white/5 opacity-60 cursor-not-allowed"
                                         )}
                                         whileTap={!isLocked ? { scale: 0.98 } : undefined}
                                         initial={{ opacity: 0, x: 20 }}
@@ -115,9 +115,9 @@ export const FloatingTaskPanel = ({ tasks, onToggle, progress }: FloatingTaskPan
                                             <motion.div
                                                 className={clsx(
                                                     "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-all",
-                                                    isCompleted && "bg-green-500 text-white shadow-md shadow-green-200",
-                                                    isActive && "border-2 border-green-400 bg-green-50",
-                                                    isLocked && "bg-gray-200 text-gray-400"
+                                                    isCompleted && "bg-bloom-primary text-bloom-text shadow-md shadow-bloom-primary/30",
+                                                    isActive && "border-2 border-bloom-primary bg-bloom-primary/10",
+                                                    isLocked && "bg-gray-200 dark:bg-gray-700 text-gray-400"
                                                 )}
                                                 whileTap={!isLocked ? { scale: 0.8 } : undefined}
                                                 layout
@@ -137,7 +137,7 @@ export const FloatingTaskPanel = ({ tasks, onToggle, progress }: FloatingTaskPan
                                                     {isActive && (
                                                         <motion.div
                                                             key="active"
-                                                            className="w-2 h-2 rounded-full bg-green-400"
+                                                            className="w-2 h-2 rounded-full bg-bloom-primary"
                                                             animate={{ scale: [1, 1.3, 1] }}
                                                             transition={{ duration: 1, repeat: Infinity }}
                                                         />
@@ -159,8 +159,8 @@ export const FloatingTaskPanel = ({ tasks, onToggle, progress }: FloatingTaskPan
                                                 <div
                                                     className={clsx(
                                                         "font-medium text-sm transition-colors truncate",
-                                                        isCompleted && "text-green-700 line-through opacity-70",
-                                                        isActive && "text-green-900 font-semibold",
+                                                        isCompleted && "text-bloom-text/70 line-through opacity-70",
+                                                        isActive && "text-bloom-text font-bold",
                                                         isLocked && "text-gray-400"
                                                     )}
                                                 >
@@ -170,7 +170,7 @@ export const FloatingTaskPanel = ({ tasks, onToggle, progress }: FloatingTaskPan
                                                     <motion.div
                                                         initial={{ opacity: 0, height: 0 }}
                                                         animate={{ opacity: 1, height: "auto" }}
-                                                        className="text-xs text-green-600 mt-0.5"
+                                                        className="text-xs text-bloom-text/80 mt-0.5"
                                                     >
                                                         {task.description}
                                                     </motion.div>
@@ -198,7 +198,7 @@ export const FloatingTaskPanel = ({ tasks, onToggle, progress }: FloatingTaskPan
                                         <AnimatePresence>
                                             {isActive && !isCompleted && index > 0 && (
                                                 <motion.div
-                                                    className="absolute inset-0 border-2 border-green-400 rounded-xl pointer-events-none"
+                                                    className="absolute inset-0 border-2 border-bloom-primary rounded-xl pointer-events-none"
                                                     initial={{ opacity: 0, scale: 0.95 }}
                                                     animate={{ opacity: [0, 1, 0], scale: 1 }}
                                                     transition={{ duration: 0.6 }}
@@ -218,8 +218,8 @@ export const FloatingTaskPanel = ({ tasks, onToggle, progress }: FloatingTaskPan
                                 className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-t border-green-100 text-center"
                             >
                                 <div className="text-2xl mb-1">🎉</div>
-                                <div className="font-bold text-green-800 text-sm">Tree Fully Grown!</div>
-                                <div className="text-xs text-green-600">All milestones completed</div>
+                                <div className="font-bold text-bloom-text text-sm">Tree Fully Grown!</div>
+                                <div className="text-xs text-bloom-text/80">All milestones completed</div>
                             </motion.div>
                         )}
                     </motion.div>

@@ -2,8 +2,10 @@
 
 import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { OakTree } from "./oak-tree";
-import { FloatingTaskPanel } from "./floating-task-panel";
+import { TreeRenderer } from "./tree-renderer";
+import { getTreeConfig } from "./tree-types";
+
+import { TaskChecklist } from "./task-checklist";
 
 interface Task {
     id: string;
@@ -17,6 +19,7 @@ interface GrowthContainerProps {
     description: string;
     initialTasks: Task[];
     onReset: () => void;
+    onUpdate: (tasks: Task[]) => void;
 }
 
 export const GrowthContainer = ({
@@ -24,16 +27,20 @@ export const GrowthContainer = ({
     description,
     initialTasks,
     onReset,
+    onUpdate,
 }: GrowthContainerProps) => {
     const [tasks, setTasks] = useState<Task[]>(initialTasks);
+    const treeConfig = getTreeConfig(title);
 
     const handleToggle = useCallback((id: string) => {
-        setTasks((prev) =>
-            prev.map((task) =>
+        setTasks((prev) => {
+            const newTasks = prev.map((task) =>
                 task.id === id ? { ...task, completed: !task.completed } : task
-            )
-        );
-    }, []);
+            );
+            onUpdate(newTasks);
+            return newTasks;
+        });
+    }, [onUpdate]);
 
     // Calculate progress
     const completedCount = tasks.filter((t) => t.completed).length;
@@ -46,10 +53,10 @@ export const GrowthContainer = ({
                 className="absolute inset-0 transition-all duration-1000"
                 style={{
                     background: progress >= 75
-                        ? "linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 50%, #C8E6C9 80%, #A5D6A7 100%)"
+                        ? "linear-gradient(to bottom, var(--sky-2-start) 0%, var(--sky-2-mid) 50%, var(--sky-2-end) 100%)"
                         : progress >= 50
-                            ? "linear-gradient(to bottom, #B3E5FC 0%, #E1F5FE 50%, #DCEDC8 80%, #AED581 100%)"
-                            : "linear-gradient(to bottom, #E3F2FD 0%, #F1F8E9 60%, #DCEDC8 100%)"
+                            ? "linear-gradient(to bottom, var(--sky-1-start) 0%, var(--sky-1-mid) 50%, var(--sky-1-end) 100%)"
+                            : "linear-gradient(to bottom, var(--sky-0-start) 0%, var(--sky-0-mid) 50%, var(--sky-0-end) 100%)"
                 }}
             />
 
@@ -96,7 +103,7 @@ export const GrowthContainer = ({
             {/* Tree container - full screen */}
             <div className="absolute inset-0 flex items-end justify-center pb-8">
                 <div className="w-full max-w-4xl h-[85vh]">
-                    <OakTree progress={progress} />
+                    <TreeRenderer config={treeConfig} progress={progress} />
                 </div>
             </div>
 
@@ -106,9 +113,9 @@ export const GrowthContainer = ({
                 animate={{ opacity: 1, y: 0 }}
                 className="absolute top-4 left-4 z-20"
             >
-                <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 px-5 py-3">
-                    <h2 className="text-xl font-bold text-green-900">{title}</h2>
-                    <p className="text-sm text-green-600">{description}</p>
+                <div className="bg-white/80 dark:bg-black/60 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 dark:border-white/10 px-5 py-3">
+                    <h2 className="text-xl font-bold text-green-900 dark:text-green-100">{title}</h2>
+                    <p className="text-sm text-green-600 dark:text-green-300">{description}</p>
                 </div>
                 <button
                     onClick={onReset}
@@ -118,12 +125,13 @@ export const GrowthContainer = ({
                 </button>
             </motion.div>
 
-            {/* Floating task panel */}
-            <FloatingTaskPanel
-                tasks={tasks}
-                onToggle={handleToggle}
-                progress={progress}
-            />
+            {/* Task Checklist Panel - Replaces FloatingTaskPanel */}
+            <div className="absolute top-4 right-4 z-20 w-[420px]">
+                <TaskChecklist
+                    tasks={tasks}
+                    onToggle={handleToggle}
+                />
+            </div>
 
             {/* Bottom progress indicator */}
             <motion.div
@@ -131,17 +139,17 @@ export const GrowthContainer = ({
                 animate={{ opacity: 1, y: 0 }}
                 className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20"
             >
-                <div className="bg-white/90 backdrop-blur-xl rounded-full shadow-xl border border-white/50 px-6 py-3 flex items-center gap-4">
+                <div className="bg-white/90 dark:bg-black/70 backdrop-blur-xl rounded-full shadow-xl border border-white/50 dark:border-white/10 px-6 py-3 flex items-center gap-4">
                     <div className="text-2xl">
                         {progress < 25 ? "🌱" : progress < 50 ? "🌿" : progress < 75 ? "🌳" : progress < 100 ? "🌲" : "🎉"}
                     </div>
                     <div>
-                        <div className="text-sm font-bold text-green-900">
+                        <div className="text-sm font-bold text-green-900 dark:text-green-100">
                             {progress < 25 ? "Just Planted" : progress < 50 ? "Growing" : progress < 75 ? "Thriving" : progress < 100 ? "Almost There" : "Fully Grown!"}
                         </div>
-                        <div className="w-32 h-2 bg-green-100 rounded-full overflow-hidden">
+                        <div className="w-32 h-2 bg-bloom-primary/20 rounded-full overflow-hidden">
                             <motion.div
-                                className="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"
+                                className="h-full bg-gradient-to-r from-bloom-primary to-bloom-text rounded-full"
                                 initial={{ width: 0 }}
                                 animate={{ width: `${progress}%` }}
                                 transition={{ type: "spring", stiffness: 60 }}

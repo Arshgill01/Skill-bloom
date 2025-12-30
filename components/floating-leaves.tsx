@@ -31,6 +31,13 @@ const leaves: Leaf[] = Array.from({ length: 12 }, (_, i) => ({
 }));
 
 export const FloatingLeaves = () => {
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null;
 
     return (
         <div
