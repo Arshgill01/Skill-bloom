@@ -31,7 +31,7 @@ export const DroopingTree = ({ progress, config }: DroopingTreeProps) => {
             const x = Math.cos(angle) * canopyRadius;
             const z = Math.sin(angle) * canopyRadius; // Simulated depth
             // Higher probability of long branches on sides
-            const length = treeHeight * 0.8 + Math.random() * treeHeight * 0.4;
+            const length = treeHeight * 0.8 + ((i * 87.65) % 1) * treeHeight * 0.4;
 
             result.push({
                 x,

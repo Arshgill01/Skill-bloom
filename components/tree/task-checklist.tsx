@@ -4,12 +4,14 @@ import React, { useState } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Check, ChevronDown, Sparkles, Trophy, Lock } from "lucide-react";
 import clsx from "clsx";
+import { useSound } from "@/components/use-sound";
 
 interface Task {
     id: string;
     label: string;
     description: string;
     completed: boolean;
+    searchQuery?: string;
 }
 
 interface TaskChecklistProps {
@@ -21,6 +23,14 @@ export const TaskChecklist = ({ tasks, onToggle }: TaskChecklistProps) => {
     const completedCount = tasks.filter((t) => t.completed).length;
     const progress = (completedCount / tasks.length) * 100;
     const [expandedId, setExpandedId] = useState<string | null>(null);
+    const { playPop, playSuccess } = useSound();
+
+    // Effect to play success sound on 100% completion
+    React.useEffect(() => {
+        if (progress === 100) {
+            playSuccess();
+        }
+    }, [progress, playSuccess]);
 
     // Calculate task state (locked/active/completed)
     const getTaskState = (index: number) => {
@@ -83,6 +93,7 @@ export const TaskChecklist = ({ tasks, onToggle }: TaskChecklistProps) => {
                                 isExpanded={expandedId === task.id}
                                 setExpanded={() => setExpandedId(expandedId === task.id ? null : task.id)}
                                 state={state}
+                                playPop={playPop}
                             />
                         );
                     })}
@@ -108,7 +119,7 @@ export const TaskChecklist = ({ tasks, onToggle }: TaskChecklistProps) => {
                                 🏆
                             </motion.div>
                             <h4 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">Quest Complete!</h4>
-                            <p className="text-gray-500 dark:text-gray-400 mb-6">You've mastered this skill tree.</p>
+                            <p className="text-gray-500 dark:text-gray-400 mb-6">You&apos;ve mastered this skill tree.</p>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -139,6 +150,7 @@ const Card = ({
     isExpanded: boolean;
     setExpanded: () => void;
     state: "locked" | "active" | "completed";
+    playPop: () => void;
 }) => {
     const isLocked = state === "locked";
     const isActive = state === "active";
@@ -165,7 +177,10 @@ const Card = ({
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
-                            if (!isLocked) onToggle();
+                            if (!isLocked) {
+                                onToggle();
+                                if (!isCompleted) playPop(); // Play pop when checking (not unchecking)
+                            }
                         }}
                         disabled={isLocked}
                         className={clsx(
@@ -265,6 +280,26 @@ const Card = ({
                                 )} />
                             )}
                         </motion.div>
+
+                        {/* Learn Button (Smart Resource) */}
+                        {isExpanded && !isLocked && task.searchQuery && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700/50"
+                            >
+                                <a
+                                    href={`https://www.google.com/search?q=${encodeURIComponent(task.searchQuery)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 text-xs font-semibold text-bloom-primary hover:text-green-600 dark:hover:text-green-300 transition-colors bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-full hover:bg-green-100 dark:hover:bg-green-900/40"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <Sparkles size={12} />
+                                    Learn: {task.searchQuery}
+                                </a>
+                            </motion.div>
+                        )}
                     </div>
                 </div>
             </div>

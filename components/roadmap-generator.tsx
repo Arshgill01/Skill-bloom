@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sprout, Loader2, Sparkles, TreeDeciduous } from "lucide-react";
+import { Loader2, Sparkles, TreeDeciduous } from "lucide-react";
 import { GrowthContainer } from "@/components/tree/growth-container";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MiniTree } from "@/components/tree/tree-renderer";
@@ -13,6 +13,7 @@ interface Task {
     label: string;
     description: string;
     completed: boolean;
+    searchQuery?: string;
 }
 
 interface RoadmapData {
@@ -60,7 +61,7 @@ export const RoadmapGenerator = () => {
             });
 
             if (!res.ok) {
-                throw new Error(`API Error: ${res.status}`);
+                throw new Error(`API Error: ${res.status} `);
             }
 
             const text = await res.text();
@@ -159,20 +160,19 @@ export const RoadmapGenerator = () => {
                         <div className="mt-8 flex flex-col items-center gap-4">
                             <div className="flex gap-3 justify-center text-sm text-bloom-text/80 font-medium">
                                 <span>Try:</span>
-                                {["Learn React", "Master Python", "Learn Chess"].map((ex) => {
-                                    const config = getTreeConfig(ex);
-                                    return (
-                                        <button
-                                            key={ex}
-                                            onClick={() => setPrompt(ex)}
-                                            onMouseEnter={() => setHoveredSkill(ex)}
-                                            onMouseLeave={() => setHoveredSkill(null)}
-                                            className="hover:text-bloom-primary transition-colors underline decoration-dotted underline-offset-4 relative"
-                                        >
-                                            {ex}
-                                        </button>
-                                    );
-                                })}
+                                {/* Quick prompts */}
+                                {["Learn React", "Master Python", "Become a chef", "Learn Guitar"].map((examplePrompt) => (
+                                    <button
+                                        key={examplePrompt}
+                                        type="button"
+                                        onClick={() => setPrompt(examplePrompt)}
+                                        onMouseEnter={() => setHoveredSkill(examplePrompt)}
+                                        onMouseLeave={() => setHoveredSkill(null)}
+                                        className="hover:text-bloom-primary transition-colors underline decoration-dotted underline-offset-4 relative"
+                                    >
+                                        {examplePrompt}
+                                    </button>
+                                ))}
                             </div>
 
                             {/* Tree Preview on Hover */}

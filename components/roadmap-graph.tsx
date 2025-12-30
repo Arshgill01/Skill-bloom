@@ -1,14 +1,10 @@
 
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import ReactFlow, {
     useNodesState,
     useEdgesState,
-    addEdge,
-    Connection,
-    Edge,
-    MarkerType,
     Background,
     Controls,
     useReactFlow,
@@ -23,6 +19,7 @@ const nodeTypes = {
 };
 
 // Dagre Layouting Logic
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getLayoutedElements = (nodes: any[], edges: any[], direction = "TB") => {
     const dagreGraph = new dagre.graphlib.Graph();
     dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -57,7 +54,9 @@ const getLayoutedElements = (nodes: any[], edges: any[], direction = "TB") => {
 };
 
 interface RoadmapGraphProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     initialNodes: any[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     initialEdges: any[];
 }
 

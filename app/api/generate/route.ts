@@ -37,30 +37,28 @@ export async function POST(req: Request) {
 
 CRITICAL: Return ONLY valid JSON. No markdown, no backticks, no explanation.
 
-Required JSON Structure:
-{
+R{
   "title": "Skill Title",
   "description": "A motivating one-line summary of the learning journey",
   "tasks": [
-    { "id": "1", "label": "Task Name", "description": "Clear, actionable description", "completed": false }
+    { 
+      "id": "1", 
+      "label": "Task Name", 
+      "description": "Clear, actionable description", 
+      "completed": false,
+      "searchQuery": "Optimized Google search query to learn this topic (e.g. 'React useState tutorial')"
+    }
   ]
 }
 
 RULES FOR OPTIMAL LEARNING ORDER:
 1. Create exactly 10-15 progressive milestones
-2. ORDER MATTERS: Each task must be a prerequisite for the next - never teach advanced concepts before fundamentals
-3. Start with absolute basics (setup, core concepts, terminology)
-4. Progress through: Fundamentals → Core Skills → Intermediate Concepts → Advanced Topics → Real-world Application
-5. End with a capstone project that combines all learned skills
-6. Each task should be achievable in 1-3 hours of focused learning
-7. Descriptions should be specific and actionable, not vague
-8. Include both theoretical knowledge and hands-on practice
-
-ORDERING PRINCIPLES:
-- Theory before practice for each concept
-- Simple examples before complex applications
-- Individual skills before combining them
-- Local/isolated concepts before integrated systems
+2. ORDER MATTERS: Each task must be a prerequisite for the next
+3. Start with absolute basics
+4. Progress through: Fundamentals → Core Skills → Intermediate → Advanced → Capstone
+5. Each task should be achievable in 1-3 hours
+6. Descriptions should be specific
+7. "searchQuery" must be a concise, effective search term for a beginner to find the best tutorials/docs
 
 Generate the roadmap now:`;
 

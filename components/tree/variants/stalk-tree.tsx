@@ -25,9 +25,9 @@ export const StalkTree = ({ progress, config }: StalkTreeProps) => {
     const stalks = React.useMemo(() => {
         return [...Array(stalkCount)].map((_, i) => ({
             x: (i - (stalkCount - 1) / 2) * 50, // Horizontally distributed
-            height: stalkHeight * (0.8 + Math.random() * 0.4),
-            lean: (Math.random() - 0.5) * 20, // Slight random lean
-            width: 15 + Math.random() * 10
+            height: stalkHeight * (0.8 + ((i * 12.34) % 1) * 0.4),
+            lean: (((i * 56.78) % 1) - 0.5) * 20, // Slight random lean
+            width: 15 + ((i * 90.12) % 1) * 10
         }));
     }, [stalkCount, stalkHeight]);
 

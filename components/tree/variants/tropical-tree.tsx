@@ -36,7 +36,7 @@ export const TropicalTree = ({ progress, config }: TropicalTreeProps) => {
             const angleRad = (angleDeg * Math.PI) / 180;
             result.push({
                 angle: angleRad,
-                length: frondLength + Math.random() * 20,
+                length: frondLength + ((i * 45.67) % 1) * 20,
                 delay: i * 0.05,
                 color: config.frondColor[i % config.frondColor.length]
             });

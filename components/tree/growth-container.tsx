@@ -6,13 +6,24 @@ import { TreeRenderer } from "./tree-renderer";
 import { getTreeConfig } from "./tree-types";
 
 import { TaskChecklist } from "./task-checklist";
+import { useSound } from "@/components/use-sound";
 
 interface Task {
     id: string;
     label: string;
     description: string;
     completed: boolean;
+    searchQuery?: string;
 }
+
+const copyToClipboard = async (text: string) => {
+    try {
+        await navigator.clipboard.writeText(text);
+        alert("Copied to clipboard! Share your progress with friends.");
+    } catch (err) {
+        console.error("Failed to copy:", err);
+    }
+};
 
 interface GrowthContainerProps {
     title: string;
@@ -31,20 +42,31 @@ export const GrowthContainer = ({
 }: GrowthContainerProps) => {
     const [tasks, setTasks] = useState<Task[]>(initialTasks);
     const treeConfig = getTreeConfig(title);
+    const { playPop } = useSound();
 
     const handleToggle = useCallback((id: string) => {
-        setTasks((prev) => {
-            const newTasks = prev.map((task) =>
-                task.id === id ? { ...task, completed: !task.completed } : task
-            );
-            onUpdate(newTasks);
-            return newTasks;
-        });
-    }, [onUpdate]);
+        const newTasks = tasks.map((task) =>
+            task.id === id ? { ...task, completed: !task.completed } : task
+        );
+        setTasks(newTasks);
+        onUpdate(newTasks);
+    }, [tasks, onUpdate]);
 
     // Calculate progress
     const completedCount = tasks.filter((t) => t.completed).length;
     const progress = (completedCount / tasks.length) * 100;
+
+    const handleShare = () => {
+        const completedTasks = tasks.filter(t => t.completed).map(t => `✅ ${t.label}`).join("\n");
+        const nextTask = tasks.find(t => !t.completed);
+        const nextTaskText = nextTask ? `👉 Next: ${nextTask.label}` : "🎉 All Complete!";
+
+        const emoji = progress < 25 ? "🌱" : progress < 50 ? "🌿" : progress < 75 ? "🌳" : "🌲";
+
+        const shareText = `🌳 SkillBloom Update: ${title}\n${emoji} Progress: ${Math.round(progress)}%\n\n${completedTasks}\n${nextTaskText}\n\nGrow your own skills at using SkillBloom!`;
+
+        copyToClipboard(shareText);
+    };
 
     return (
         <div className="fixed inset-0 overflow-hidden">
@@ -117,12 +139,26 @@ export const GrowthContainer = ({
                     <h2 className="text-xl font-bold text-green-900 dark:text-green-100">{title}</h2>
                     <p className="text-sm text-green-600 dark:text-green-300">{description}</p>
                 </div>
-                <button
-                    onClick={onReset}
-                    className="mt-2 text-xs text-white/80 hover:text-white bg-black/20 hover:bg-black/30 px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors"
-                >
-                    ← Start Over
-                </button>
+                <div className="flex gap-2 mt-2">
+                    <button
+                        onClick={() => {
+                            playPop();
+                            onReset();
+                        }}
+                        className="text-xs text-white/80 hover:text-white bg-black/20 hover:bg-black/30 px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors"
+                    >
+                        ← Start Over
+                    </button>
+                    <button
+                        onClick={() => {
+                            playPop();
+                            handleShare();
+                        }}
+                        className="text-xs text-white/90 hover:text-white bg-bloom-primary/80 hover:bg-bloom-primary px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors font-medium flex items-center gap-1 shadow-lg shadow-bloom-primary/20"
+                    >
+                        Share Progress 📤
+                    </button>
+                </div>
             </motion.div>
 
             {/* Task Checklist Panel - Replaces FloatingTaskPanel */}

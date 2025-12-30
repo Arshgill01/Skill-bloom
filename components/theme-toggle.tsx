@@ -19,7 +19,7 @@ export const ThemeToggle = () => {
 
     // Load theme from localStorage on mount
     useEffect(() => {
-        setMounted(true);
+        setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
         const saved = localStorage.getItem("theme") as Theme;
         if (saved && ["light", "dark", "autumn"].includes(saved)) {
             setTheme(saved);

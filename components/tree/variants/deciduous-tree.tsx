@@ -33,9 +33,11 @@ export const DeciduousTree = ({ progress, config }: DeciduousTreeProps) => {
     const leaves = useMemo(() => {
         const result = [];
         for (let i = 0; i < leafCount; i++) {
-            const angle = (i / leafCount) * Math.PI * 2 + Math.random() * 0.3;
+            // Pseudo-random using index
+            const magic = (i * 123.45) % 1;
+            const angle = (i / leafCount) * Math.PI * 2 + magic * 0.3;
             // Adjust radius based on canopy shape
-            let radiusX = canopySize * 0.3 + Math.random() * canopySize * 0.5;
+            let radiusX = canopySize * 0.3 + ((i * 321.45) % 1) * canopySize * 0.5;
             let radiusY = radiusX;
 
             if (config.canopyShape === "oval") {
@@ -46,11 +48,11 @@ export const DeciduousTree = ({ progress, config }: DeciduousTreeProps) => {
 
             const x = Math.cos(angle) * radiusX;
             const y = Math.sin(angle) * radiusY * 0.6 - canopySize * 0.2;
-            const colorIndex = Math.floor(Math.random() * config.leafColor.length);
+            const colorIndex = Math.floor(((i * 67.89) % 1) * config.leafColor.length);
 
             result.push({
                 x, y,
-                size: 12 + Math.random() * 25,
+                size: 12 + ((i * 456.78) % 1) * 25,
                 delay: i * 0.03,
                 color: config.leafColor[colorIndex]
             });

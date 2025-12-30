@@ -29,7 +29,8 @@ export const SucculentTree = ({ progress, config }: SucculentTreeProps) => {
 
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
-                if (Math.random() > 0.5) {
+                // Deterministic check
+                if (((r * c * 1.23 + r + c) % 1) > 0.5) {
                     spines.push({ x: -w / 2 + 5 + c * 15, y: -h + 10 + r * 20 });
                 }
             }
@@ -80,7 +81,7 @@ export const SucculentTree = ({ progress, config }: SucculentTreeProps) => {
             ))}
 
             {/* Arms */}
-            {arms > 0 && [-1].map(dir => ( // Simplify to one arm for now or dynamic
+            {arms > 0 && [-1].map(() => ( // Simplify to one arm for now or dynamic
                 <g key="arm-left" transform={`translate(${-width / 2}, ${-height * 0.6})`}>
                     <motion.path
                         d={`M 0 0 Q ${-50} 0 ${-50} -50 L ${-50} -100 Q ${-50} -120 ${-30} -120 L ${-width / 2} -120`}
@@ -95,7 +96,7 @@ export const SucculentTree = ({ progress, config }: SucculentTreeProps) => {
                 </g>
             ))}
 
-            {arms > 1 && [1].map(dir => (
+            {arms > 1 && [1].map(() => (
                 <g key="arm-right" transform={`translate(${width / 2}, ${-height * 0.4})`}>
                     <motion.path
                         d={`M 0 0 Q ${50} 0 ${50} -50 L ${50} -80`}
