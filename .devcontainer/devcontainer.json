@@ -1,0 +1,12 @@
+{
+  "name": "Gemini Agent Workspace",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "postCreateCommand": "npm install -g @google/gemini-cli && echo 'Agent Ready!'",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      }
+    }
+  }
+}
