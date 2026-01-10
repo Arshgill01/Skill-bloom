@@ -157,11 +157,11 @@ export const RoadmapGenerator = () => {
                     >
                         <h2 className="text-4xl font-bold mb-6 text-bloom-text leading-tight">
                             Grow your skills,<br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-bloom-primary to-bloom-text brightness-110">
+                            <span className="text-bloom-primary">
                                 one step at a time.
                             </span>
                         </h2>
-                        <p className="text-bloom-text/90 mb-8 text-lg font-medium">
+                        <p className="text-bloom-text-muted mb-8 text-lg">
                             Enter what you want to learn. Watch your tree grow as you complete each milestone.
                         </p>
 
@@ -172,12 +172,12 @@ export const RoadmapGenerator = () => {
                                 onChange={(e) => setPrompt(e.target.value)}
                                 placeholder="I want to learn..."
                                 disabled={isLoading}
-                                className="w-full px-6 py-5 rounded-2xl border-2 border-bloom-primary/20 focus:border-bloom-primary focus:ring-4 focus:ring-bloom-primary/20 outline-none transition-all text-lg shadow-sm group-hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed bg-white/80 dark:bg-gray-900/40 text-bloom-text backdrop-blur-sm placeholder:text-bloom-text/60"
+                                className="w-full px-6 py-5 rounded-xl border border-bloom-border focus:border-bloom-primary focus:ring-2 focus:ring-bloom-primary/20 outline-none transition-all text-lg shadow-sm group-hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed bg-bloom-card text-bloom-text placeholder:text-bloom-text-muted"
                             />
                             <button
                                 type="submit"
                                 disabled={isLoading || !prompt}
-                                className="absolute right-3 top-3 bottom-3 px-6 rounded-xl bg-bloom-primary text-bloom-text font-bold hover:brightness-110 transition-all disabled:opacity-50 flex items-center gap-2 shadow-sm"
+                                className="absolute right-3 top-3 bottom-3 px-6 rounded-lg bg-bloom-primary text-white font-bold hover:bg-bloom-accent transition-all disabled:opacity-50 flex items-center gap-2"
                             >
                                 {isLoading ? (
                                     <>
@@ -194,7 +194,7 @@ export const RoadmapGenerator = () => {
                         </form>
 
                         <div className="mt-8 flex flex-col items-center gap-4">
-                            <div className="flex gap-3 justify-center text-sm text-bloom-text/80 font-medium">
+                            <div className="flex gap-3 justify-center text-sm text-bloom-text-muted">
                                 <span>Try:</span>
                                 {/* Quick prompts */}
                                 {["Learn React", "Master Python", "Become a chef", "Learn Guitar"].map((examplePrompt) => (
@@ -220,10 +220,10 @@ export const RoadmapGenerator = () => {
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
                                         exit={{ opacity: 0, y: -10, scale: 0.9 }}
                                         transition={{ duration: 0.2 }}
-                                        className="flex flex-col items-center gap-2 p-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-bloom-primary/30 shadow-lg"
+                                        className="flex flex-col items-center gap-2 p-4 bg-bloom-card border border-bloom-border rounded-xl shadow-lg"
                                     >
                                         <MiniTree config={getTreeConfig(hoveredSkill)} size={80} />
-                                        <span className="text-xs text-bloom-text/70">
+                                        <span className="text-xs text-bloom-text-muted">
                                             {getTreeConfig(hoveredSkill).emoji} {getTreeConfig(hoveredSkill).name} Tree
                                         </span>
                                     </motion.div>
