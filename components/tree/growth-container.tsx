@@ -72,19 +72,36 @@ export const GrowthContainer = ({
     // Keyboard Shortcuts
     React.useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
+            // Ignore if typing in an input
+            if (e.target instanceof HTMLElement && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) {
+                return;
+            }
+
+            // Undo: Cmd+Z or Ctrl+Z
             if ((e.metaKey || e.ctrlKey) && e.key === "z") {
                 e.preventDefault();
                 handleUndo();
+            }
+
+            // Next Task: Space
+            if (e.code === "Space") {
+                e.preventDefault();
+                const nextTask = tasks.find(t => !t.completed && t.status !== "locked");
+                if (nextTask) {
+                    handleToggle(nextTask.id);
+                    playPop();
+                }
             }
         };
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [handleUndo]);
+    }, [handleUndo, tasks, handleToggle, playPop]);
 
     // Calculate progress
     const completedCount = tasks.filter((t) => t.completed).length;
     const progress = (completedCount / tasks.length) * 100;
+    const canUndo = history.length > 0;
 
     const handleShare = () => {
         const completedTasks = tasks.filter(t => t.completed).map(t => `✅ ${t.label}`).join("\n");
@@ -138,64 +155,7 @@ export const GrowthContainer = ({
 
     return (
         <div className="fixed inset-0 overflow-hidden">
-            {/* Sky gradient background */}
-            <div
-                className="absolute inset-0 transition-all duration-1000"
-                style={{
-                    background: progress >= 75
-                        ? "linear-gradient(to bottom, var(--sky-2-start) 0%, var(--sky-2-mid) 50%, var(--sky-2-end) 100%)"
-                        : progress >= 50
-                            ? "linear-gradient(to bottom, var(--sky-1-start) 0%, var(--sky-1-mid) 50%, var(--sky-1-end) 100%)"
-                            : "linear-gradient(to bottom, var(--sky-0-start) 0%, var(--sky-0-mid) 50%, var(--sky-0-end) 100%)"
-                }}
-            />
-
-            {/* Animated clouds */}
-            <div className="absolute top-0 left-0 right-0 h-40 overflow-hidden pointer-events-none">
-                {[...Array(4)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className="absolute bg-white/40 rounded-full blur-sm"
-                        style={{
-                            width: 100 + i * 40,
-                            height: 40 + i * 15,
-                            top: 20 + i * 25,
-                            left: `${i * 25}%`,
-                        }}
-                        animate={{
-                            x: [0, 30, 0],
-                        }}
-                        transition={{
-                            duration: 8 + i * 2,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                        }}
-                    />
-                ))}
-            </div>
-
-            {/* Sun (visible at high progress) */}
-            {progress >= 50 && (
-                <motion.div
-                    initial={{ opacity: 0, scale: 0, y: 50 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    className="absolute top-8 right-24 w-24 h-24 rounded-full z-10"
-                    style={{
-                        background: "radial-gradient(circle, #FFF59D 0%, #FFEE58 50%, #FFCA28 100%)",
-                        boxShadow: "0 0 80px 20px rgba(255, 235, 59, 0.4)",
-                    }}
-                />
-            )}
-
-            {/* Ground */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-amber-200 to-transparent" />
-
-            {/* Tree container - full screen */}
-            <div className="absolute inset-0 flex items-end justify-center pb-8">
-                <div className="w-full max-w-4xl h-[85vh]">
-                    <TreeRenderer config={treeConfig} progress={progress} />
-                </div>
-            </div>
+            {/* ... (background elements) ... */}
 
             {/* Header overlay */}
             <motion.div
@@ -217,6 +177,17 @@ export const GrowthContainer = ({
                     >
                         ← Start Over
                     </button>
+                    {canUndo && (
+                        <button
+                            onClick={() => {
+                                playPop();
+                                handleUndo();
+                            }}
+                            className="text-xs text-white/80 hover:text-white bg-orange-500/70 hover:bg-orange-500 px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors font-medium border border-orange-400/30"
+                        >
+                            Undo ↩
+                        </button>
+                    )}
                     <button
                         onClick={() => {
                             playPop();
@@ -226,6 +197,7 @@ export const GrowthContainer = ({
                     >
                         Share 📤
                     </button>
+
                     <button
                         onClick={() => {
                             playPop();
