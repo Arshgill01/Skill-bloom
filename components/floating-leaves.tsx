@@ -76,7 +76,7 @@ export const FloatingLeaves = () => {
                             height={leaf.size * 1.4}
                             viewBox="0 0 24 34"
                             fill="none"
-                            className="opacity-40"
+                            className="opacity-20"
                         >
                             <path
                                 d="M12 0C12 0 24 10 24 22C24 28 19 34 12 34C5 34 0 28 0 22C0 10 12 0 12 0Z"
