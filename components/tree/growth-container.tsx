@@ -70,7 +70,18 @@ export const GrowthContainer = ({
         showToast("Undid last action", "info");
     }, [history, onUpdate, showToast]);
 
-    // Keyboard Shortcuts
+    // Vim navigation
+    const {
+        selectedIndex,
+        showHelp,
+        setShowHelp,
+    } = useVimNavigation({
+        tasks,
+        onToggle: handleToggle,
+        onUndo: handleUndo,
+    });
+
+    // Keyboard Shortcuts (Space for next task)
     React.useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             // Ignore if typing in an input
@@ -287,8 +298,12 @@ export const GrowthContainer = ({
                 <TaskChecklist
                     tasks={tasks}
                     onToggle={handleToggle}
+                    selectedIndex={selectedIndex}
                 />
             </div>
+
+            {/* Vim Help Modal */}
+            {showHelp && <VimHelpModal onClose={() => setShowHelp(false)} />}
 
             {/* Bottom progress indicator */}
             <motion.div
