@@ -9,6 +9,7 @@ import { TaskChecklist } from "./task-checklist";
 import { useSound } from "@/components/use-sound";
 import { useToast } from "@/components/toast";
 import { Task } from "@/types";
+import { useVimNavigation, VimHelpModal } from "@/hooks/use-vim-navigation";
 
 const copyToClipboard = async (text: string, showToast: (msg: string, type: "success" | "error" | "info") => void) => {
     try {
