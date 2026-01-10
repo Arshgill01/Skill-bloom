@@ -214,7 +214,7 @@ const Card = ({
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1 }}
                                     >
-                                        <Lock size={12} className="text-gray-400" />
+                                        <Lock size={12} style={{ color: 'var(--bloom-text-muted)' }} />
                                     </motion.div>
                                 )}
                             </AnimatePresence>
