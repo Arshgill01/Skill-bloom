@@ -295,24 +295,24 @@ export const GrowthContainer = ({
                 animate={{ opacity: 1, y: 0 }}
                 className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20"
             >
-                <div className="bg-white/90 dark:bg-black/70 backdrop-blur-xl rounded-full shadow-xl border border-white/50 dark:border-white/10 px-6 py-3 flex items-center gap-4">
+                <div className="bg-bloom-card/95 border border-bloom-border rounded-full shadow-lg px-6 py-3 flex items-center gap-4">
                     <div className="text-2xl">
                         {progress < 25 ? "🌱" : progress < 50 ? "🌿" : progress < 75 ? "🌳" : progress < 100 ? "🌲" : "🎉"}
                     </div>
                     <div>
-                        <div className="text-sm font-bold text-green-900 dark:text-green-100">
+                        <div className="text-sm font-bold text-bloom-text">
                             {progress < 25 ? "Just Planted" : progress < 50 ? "Growing" : progress < 75 ? "Thriving" : progress < 100 ? "Almost There" : "Fully Grown!"}
                         </div>
-                        <div className="w-32 h-2 bg-bloom-primary/20 rounded-full overflow-hidden">
+                        <div className="w-32 h-2 bg-bloom-muted rounded-full overflow-hidden">
                             <motion.div
-                                className="h-full bg-gradient-to-r from-bloom-primary to-bloom-text rounded-full"
+                                className="h-full bg-gradient-to-r from-bloom-primary to-bloom-accent rounded-full"
                                 initial={{ width: 0 }}
                                 animate={{ width: `${progress}%` }}
                                 transition={{ type: "spring", stiffness: 60 }}
                             />
                         </div>
                     </div>
-                    <div className="text-lg font-bold text-green-600">
+                    <div className="text-lg font-bold text-bloom-primary font-mono">
                         {Math.round(progress)}%
                     </div>
                 </div>

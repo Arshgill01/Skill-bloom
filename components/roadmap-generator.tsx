@@ -101,8 +101,8 @@ export const RoadmapGenerator = () => {
                 className="w-full flex items-center justify-between mb-8"
             >
                 <div className="flex items-center gap-3">
-                    <div className="p-3 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl shadow-sm border border-bloom-primary/20">
-                        <TreeDeciduous className="text-bloom-text w-8 h-8" />
+                    <div className="p-3 bg-bloom-card border border-bloom-border rounded-xl">
+                        <TreeDeciduous className="text-bloom-primary w-8 h-8" />
                     </div>
                     <h1 className="text-3xl font-bold text-bloom-text tracking-tight">
                         SkillBloom
@@ -112,7 +112,7 @@ export const RoadmapGenerator = () => {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => setIsGardenManagerOpen(true)}
-                        className="px-4 py-2 bg-white/40 dark:bg-black/20 hover:bg-white/60 dark:hover:bg-black/40 backdrop-blur-md rounded-xl text-bloom-text font-medium text-sm transition-colors border border-bloom-primary/10 flex items-center gap-2"
+                        className="px-4 py-2 bg-bloom-card hover:bg-bloom-card-hover border border-bloom-border rounded-xl text-bloom-text font-medium text-sm transition-colors flex items-center gap-2"
                     >
                         <TreeDeciduous className="w-4 h-4" />
                         My Gardens
