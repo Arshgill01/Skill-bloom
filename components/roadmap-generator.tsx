@@ -9,7 +9,7 @@ import { MiniTree } from "@/components/tree/tree-renderer";
 import { getTreeConfig } from "@/components/tree/tree-types";
 import { Task, Roadmap } from "@/types";
 import { useToast } from "@/components/toast";
-import { usePersistence } from "@/hooks/usePersistence"; // Assuming this import is needed
+import { usePersistence } from "@/hooks/use-persistence"; // Assuming this import is needed
 
 type RoadmapData = Roadmap;
 
@@ -112,16 +112,14 @@ export const RoadmapGenerator = () => {
                         className="w-full max-w-xl text-center space-y-6"
                     >
                         {/* Skeleton for title */}
-                        <div className="space-y-3">
-                            <div className="h-10 bg-bloom-primary/20 rounded-xl w-3/4 mx-auto animate-pulse" />
-                            <div className="h-10 bg-bloom-primary/10 rounded-xl w-1/2 mx-auto animate-pulse" />
-                        </div>
+                        <div className="h-10 bg-bloom-primary/20 rounded-xl w-3/4 mx-auto animate-pulse" />
+                        <div className="h-10 bg-bloom-primary/10 rounded-xl w-1/2 mx-auto animate-pulse" />
                         {/* Skeleton for subtitle */}
                         <div className="h-6 bg-bloom-primary/10 rounded-lg w-2/3 mx-auto animate-pulse" />
                         {/* Skeleton for input */}
                         <div className="h-16 bg-white/50 dark:bg-gray-900/30 rounded-2xl border-2 border-bloom-primary/10 animate-pulse" />
                     </motion.div>
-                ) : !data ? (
+                ) : !activeRoadmap ? (
                     <motion.div
                         key="input-section"
                         initial={{ opacity: 0, y: 20 }}
@@ -213,9 +211,9 @@ export const RoadmapGenerator = () => {
                         className="w-full"
                     >
                         <GrowthContainer
-                            title={data.title || prompt}
-                            description={data.description || "Complete tasks to grow your tree!"}
-                            initialTasks={data.tasks}
+                            title={activeRoadmap.title || prompt}
+                            description={activeRoadmap.description || "Complete tasks to grow your tree!"}
+                            initialTasks={activeRoadmap.tasks}
                             onReset={handleReset}
                             onUpdate={handleTaskUpdate}
                         />
