@@ -224,9 +224,9 @@ export const GrowthContainer = ({
                 animate={{ opacity: 1, y: 0 }}
                 className="absolute top-4 left-4 z-20"
             >
-                <div className="bg-white/80 dark:bg-black/60 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 dark:border-white/10 px-5 py-3">
-                    <h2 className="text-xl font-bold text-green-900 dark:text-green-100">{title}</h2>
-                    <p className="text-sm text-green-600 dark:text-green-300">{description}</p>
+                <div className="bg-bloom-card/95 border border-bloom-border rounded-xl shadow-lg px-5 py-3">
+                    <h2 className="text-xl font-bold text-bloom-text">{title}</h2>
+                    <p className="text-sm text-bloom-text-muted">{description}</p>
                 </div>
                 <div className="flex gap-2 mt-2 flex-wrap">
                     <button
@@ -234,9 +234,9 @@ export const GrowthContainer = ({
                             playPop();
                             onReset();
                         }}
-                        className="text-xs text-white/80 hover:text-white bg-black/20 hover:bg-black/30 px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors"
+                        className="text-xs text-bloom-text-muted hover:text-bloom-text bg-bloom-card hover:bg-bloom-card-hover px-3 py-1.5 rounded-lg border border-bloom-border transition-colors"
                     >
-                        ← Start Over
+                        ← Back
                     </button>
                     {canUndo && (
                         <button
@@ -244,9 +244,9 @@ export const GrowthContainer = ({
                                 playPop();
                                 handleUndo();
                             }}
-                            className="text-xs text-white/80 hover:text-white bg-orange-500/70 hover:bg-orange-500 px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors font-medium border border-orange-400/30"
+                            className="text-xs text-bloom-text-muted hover:text-bloom-text bg-bloom-card hover:bg-bloom-card-hover px-3 py-1.5 rounded-lg border border-bloom-border transition-colors flex items-center gap-1"
                         >
-                            Undo ↩
+                            <span className="kbd text-[10px] py-0 px-1 h-4">⌘Z</span> Undo
                         </button>
                     )}
                     <button
@@ -254,9 +254,9 @@ export const GrowthContainer = ({
                             playPop();
                             handleShare();
                         }}
-                        className="text-xs text-white/90 hover:text-white bg-bloom-primary/80 hover:bg-bloom-primary px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors font-medium flex items-center gap-1 shadow-lg shadow-bloom-primary/20"
+                        className="text-xs text-bloom-primary hover:text-bloom-accent bg-bloom-card hover:bg-bloom-card-hover px-3 py-1.5 rounded-lg border border-bloom-primary/30 transition-colors font-medium"
                     >
-                        Share 📤
+                        Share
                     </button>
 
                     <button
@@ -264,12 +264,12 @@ export const GrowthContainer = ({
                             playPop();
                             handleExport();
                         }}
-                        className="text-xs text-white/80 hover:text-white bg-blue-500/70 hover:bg-blue-500 px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors font-medium"
+                        className="text-xs text-bloom-text-muted hover:text-bloom-text bg-bloom-card hover:bg-bloom-card-hover px-3 py-1.5 rounded-lg border border-bloom-border transition-colors"
                     >
-                        Export 💾
+                        Export
                     </button>
-                    <label className="text-xs text-white/80 hover:text-white bg-purple-500/70 hover:bg-purple-500 px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors font-medium cursor-pointer">
-                        Import 📁
+                    <label className="text-xs text-bloom-text-muted hover:text-bloom-text bg-bloom-card hover:bg-bloom-card-hover px-3 py-1.5 rounded-lg border border-bloom-border transition-colors cursor-pointer">
+                        Import
                         <input
                             ref={fileInputRef}
                             type="file"
