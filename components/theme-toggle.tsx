@@ -49,7 +49,7 @@ export const ThemeToggle = () => {
         <div className="relative">
             <motion.button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2.5 rounded-xl bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border border-green-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow"
+                className="p-2.5 rounded-xl bg-bloom-card border border-bloom-border shadow-sm hover:shadow-md transition-shadow"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label={`Current theme: ${currentTheme.label}. Click to change.`}
