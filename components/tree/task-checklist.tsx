@@ -129,7 +129,8 @@ const Card = ({
     isExpanded,
     setExpanded,
     state,
-    playPop
+    playPop,
+    isSelected = false
 }: {
     task: Task;
     index: number;
@@ -138,6 +139,7 @@ const Card = ({
     setExpanded: () => void;
     state: "locked" | "active" | "completed";
     playPop: () => void;
+    isSelected?: boolean;
 }) => {
     const isLocked = state === "locked";
     const isActive = state === "active";
@@ -150,16 +152,17 @@ const Card = ({
             animate={{ opacity: isLocked ? 0.6 : 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
             className={clsx(
-                "relative group rounded-xl border transition-all duration-300",
+                "relative group rounded-lg border transition-all duration-200",
+                isSelected && "ring-2 ring-bloom-primary ring-offset-1 ring-offset-bloom-card",
                 isCompleted
-                    ? "bg-green-50/50 dark:bg-green-900/10 border-green-200 dark:border-green-800"
+                    ? "bg-bloom-primary/5 border-bloom-primary/20"
                     : isLocked
-                        ? "bg-gray-50/50 dark:bg-gray-800/30 border-gray-100 dark:border-gray-800"
-                        : "bg-white dark:bg-gray-800/80 border-gray-100 dark:border-gray-700 hover:border-green-200 dark:hover:border-green-700 hover:shadow-lg dark:hover:shadow-green-900/20 shadow-sm"
+                        ? "bg-bloom-muted/30 border-bloom-border/50"
+                        : "bg-bloom-card border-bloom-border hover:border-bloom-primary/30"
             )}
         >
-            <div className="p-4">
-                <div className="flex gap-4">
+            <div className="p-3">
+                <div className="flex gap-3">
                     {/* Checkbox Area */}
                     <button
                         onClick={(e) => {
