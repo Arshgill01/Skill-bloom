@@ -9,6 +9,7 @@ import { MiniTree } from "@/components/tree/tree-renderer";
 import { getTreeConfig } from "@/components/tree/tree-types";
 import { Task, Roadmap } from "@/types";
 import { useToast } from "@/components/toast";
+import { GardenManager } from "@/components/garden-manager";
 import { usePersistence } from "@/hooks/use-persistence"; // Assuming this import is needed
 
 type RoadmapData = Roadmap;
@@ -17,6 +18,7 @@ export const RoadmapGenerator = () => {
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+    const [isGardenManagerOpen, setIsGardenManagerOpen] = useState(false);
     const { showToast } = useToast();
 
     // Persistence integration
@@ -25,6 +27,7 @@ export const RoadmapGenerator = () => {
         isHydrated,
         addRoadmap,
         updateRoadmap,
+        deleteRoadmap,
         setActiveRoadmap
     } = usePersistence();
 
@@ -83,6 +86,12 @@ export const RoadmapGenerator = () => {
         updateRoadmap(updatedRoadmap);
     };
 
+    const handleCreateNew = () => {
+        setActiveRoadmap("");
+        setPrompt("");
+        setIsGardenManagerOpen(false);
+    };
+
     return (
         <div className="w-full max-w-6xl mx-auto px-4 py-8 flex flex-col items-center min-h-screen">
 
@@ -99,8 +108,27 @@ export const RoadmapGenerator = () => {
                         SkillBloom
                     </h1>
                 </div>
-                <ThemeToggle />
+
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => setIsGardenManagerOpen(true)}
+                        className="px-4 py-2 bg-white/40 dark:bg-black/20 hover:bg-white/60 dark:hover:bg-black/40 backdrop-blur-md rounded-xl text-bloom-text font-medium text-sm transition-colors border border-bloom-primary/10 flex items-center gap-2"
+                    >
+                        <TreeDeciduous className="w-4 h-4" />
+                        My Gardens
+                    </button>
+                    <ThemeToggle />
+                </div>
             </motion.div>
+
+            <GardenManager
+                isOpen={isGardenManagerOpen}
+                onClose={() => setIsGardenManagerOpen(false)}
+                userData={userData}
+                onSelect={(id) => setActiveRoadmap(id)}
+                onCreate={handleCreateNew}
+                onDelete={deleteRoadmap}
+            />
 
             <AnimatePresence mode="wait">
                 {!isHydrated ? (
