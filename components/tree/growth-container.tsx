@@ -36,18 +36,51 @@ export const GrowthContainer = ({
     onUpdate,
 }: GrowthContainerProps) => {
     const [tasks, setTasks] = useState<Task[]>(initialTasks);
+    // History stack for Undo
+    const [history, setHistory] = useState<Task[][]>([]);
+
+    // Reset history when initialTasks changes (e.g., switching gardens)
+    React.useEffect(() => {
+        setTasks(initialTasks);
+        setHistory([]);
+    }, [initialTasks]);
+
     const treeConfig = getTreeConfig(title);
     const { playPop } = useSound();
     const { showToast } = useToast();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleToggle = useCallback((id: string) => {
+        // specific check to prevent undoing if task is locked? handled in UI but good to know
+        setHistory(prev => [...prev, tasks]); // Push current state to history
         const newTasks = tasks.map((task) =>
             task.id === id ? { ...task, completed: !task.completed } : task
         );
         setTasks(newTasks);
         onUpdate(newTasks);
     }, [tasks, onUpdate]);
+
+    const handleUndo = useCallback(() => {
+        if (history.length === 0) return;
+        const previousTasks = history[history.length - 1];
+        setHistory(prev => prev.slice(0, -1));
+        setTasks(previousTasks);
+        onUpdate(previousTasks);
+        showToast("Undid last action", "info");
+    }, [history, onUpdate, showToast]);
+
+    // Keyboard Shortcuts
+    React.useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === "z") {
+                e.preventDefault();
+                handleUndo();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [handleUndo]);
 
     // Calculate progress
     const completedCount = tasks.filter((t) => t.completed).length;
