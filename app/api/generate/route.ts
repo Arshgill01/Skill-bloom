@@ -37,7 +37,7 @@ export async function POST(req: Request) {
 
 CRITICAL: Return ONLY valid JSON. No markdown, no backticks, no explanation.
 
-R{
+{
   "title": "Skill Title",
   "description": "A motivating one-line summary of the learning journey",
   "tasks": [
@@ -66,9 +66,38 @@ Generate the roadmap now:`;
     const response = await result.response;
     const text = response.text().replace(/```json/g, "").replace(/```/g, "").trim();
 
-    return NextResponse.json(JSON.parse(text));
+    try {
+      const parsed = JSON.parse(text);
+      return NextResponse.json(parsed);
+    } catch {
+      console.error("Failed to parse Gemini response as JSON:", text.substring(0, 200));
+      return NextResponse.json(
+        { error: "Invalid response from AI. Please try again.", details: "JSON parse error" },
+        { status: 502 }
+      );
+    }
   } catch (error) {
     console.error("Generation failed:", error);
-    return NextResponse.json(MOCK_ROADMAP, { status: 200 });
+
+    // Return descriptive error instead of silently falling back to mock
+    if (error instanceof Error) {
+      if (error.message.includes("API_KEY") || error.message.includes("auth")) {
+        return NextResponse.json(
+          { error: "API authentication failed. Please check your API key." },
+          { status: 401 }
+        );
+      }
+      if (error.message.includes("rate") || error.message.includes("quota")) {
+        return NextResponse.json(
+          { error: "Rate limit exceeded. Please try again later." },
+          { status: 429 }
+        );
+      }
+    }
+
+    return NextResponse.json(
+      { error: "Failed to generate roadmap. Please try again." },
+      { status: 500 }
+    );
   }
 }

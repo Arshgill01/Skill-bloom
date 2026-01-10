@@ -5,14 +5,7 @@ import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Check, ChevronDown, Sparkles, Trophy, Lock } from "lucide-react";
 import clsx from "clsx";
 import { useSound } from "@/components/use-sound";
-
-interface Task {
-    id: string;
-    label: string;
-    description: string;
-    completed: boolean;
-    searchQuery?: string;
-}
+import { Task } from "@/types";
 
 interface TaskChecklistProps {
     tasks: Task[];

@@ -4,13 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ChevronDown, Sparkles, Lock } from "lucide-react";
 import clsx from "clsx";
-
-interface Task {
-    id: string;
-    label: string;
-    description: string;
-    completed: boolean;
-}
+import { Task } from "@/types";
 
 interface FloatingTaskPanelProps {
     tasks: Task[];

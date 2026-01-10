@@ -7,26 +7,18 @@ import { GrowthContainer } from "@/components/tree/growth-container";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MiniTree } from "@/components/tree/tree-renderer";
 import { getTreeConfig } from "@/components/tree/tree-types";
+import { Task, Roadmap } from "@/types";
+import { useToast } from "@/components/toast";
 
-interface Task {
-    id: string;
-    label: string;
-    description: string;
-    completed: boolean;
-    searchQuery?: string;
-}
-
-interface RoadmapData {
-    title: string;
-    description: string;
-    tasks: Task[];
-}
+type RoadmapData = Roadmap;
 
 export const RoadmapGenerator = () => {
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState<RoadmapData | null>(null);
     const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+    const [isHydrated, setIsHydrated] = useState(false);
+    const { showToast } = useToast();
 
     // Load from localStorage on mount
     React.useEffect(() => {
@@ -38,6 +30,7 @@ export const RoadmapGenerator = () => {
                 console.error("Failed to load saved data");
             }
         }
+        setIsHydrated(true);
     }, []);
 
     const saveData = (newData: RoadmapData | null) => {
@@ -60,22 +53,18 @@ export const RoadmapGenerator = () => {
                 body: JSON.stringify({ prompt }),
             });
 
-            if (!res.ok) {
-                throw new Error(`API Error: ${res.status} `);
+            const json = await res.json();
+
+            if (!res.ok || json.error) {
+                showToast(json.error || "Failed to generate roadmap", "error");
+                return;
             }
 
-            const text = await res.text();
-            try {
-                const json = JSON.parse(text);
-                saveData(json);
-            } catch {
-                console.error("Failed to parse data");
-                // Fallback to non-persisted state if load fails
-                alert("Something went wrong with the AI response. Check console for details.");
-            }
+            saveData(json);
+            showToast(`🌱 Your "${json.title}" tree is ready to grow!`, "success");
         } catch (err) {
             console.error(err);
-            alert("Failed to generate roadmap. Please try again.");
+            showToast("Failed to generate roadmap. Please try again.", "error");
         } finally {
             setIsLoading(false);
         }
@@ -112,7 +101,25 @@ export const RoadmapGenerator = () => {
             </motion.div>
 
             <AnimatePresence mode="wait">
-                {!data ? (
+                {!isHydrated ? (
+                    <motion.div
+                        key="loading-skeleton"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="w-full max-w-xl text-center space-y-6"
+                    >
+                        {/* Skeleton for title */}
+                        <div className="space-y-3">
+                            <div className="h-10 bg-bloom-primary/20 rounded-xl w-3/4 mx-auto animate-pulse" />
+                            <div className="h-10 bg-bloom-primary/10 rounded-xl w-1/2 mx-auto animate-pulse" />
+                        </div>
+                        {/* Skeleton for subtitle */}
+                        <div className="h-6 bg-bloom-primary/10 rounded-lg w-2/3 mx-auto animate-pulse" />
+                        {/* Skeleton for input */}
+                        <div className="h-16 bg-white/50 dark:bg-gray-900/30 rounded-2xl border-2 border-bloom-primary/10 animate-pulse" />
+                    </motion.div>
+                ) : !data ? (
                     <motion.div
                         key="input-section"
                         initial={{ opacity: 0, y: 20 }}

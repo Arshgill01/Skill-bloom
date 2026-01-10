@@ -1,27 +1,22 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import { TreeRenderer } from "./tree-renderer";
 import { getTreeConfig } from "./tree-types";
 
 import { TaskChecklist } from "./task-checklist";
 import { useSound } from "@/components/use-sound";
+import { useToast } from "@/components/toast";
+import { Task } from "@/types";
 
-interface Task {
-    id: string;
-    label: string;
-    description: string;
-    completed: boolean;
-    searchQuery?: string;
-}
-
-const copyToClipboard = async (text: string) => {
+const copyToClipboard = async (text: string, showToast: (msg: string, type: "success" | "error" | "info") => void) => {
     try {
         await navigator.clipboard.writeText(text);
-        alert("Copied to clipboard! Share your progress with friends.");
+        showToast("Copied to clipboard! Share your progress with friends.", "success");
     } catch (err) {
         console.error("Failed to copy:", err);
+        showToast("Failed to copy to clipboard", "error");
     }
 };
 
@@ -43,6 +38,8 @@ export const GrowthContainer = ({
     const [tasks, setTasks] = useState<Task[]>(initialTasks);
     const treeConfig = getTreeConfig(title);
     const { playPop } = useSound();
+    const { showToast } = useToast();
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleToggle = useCallback((id: string) => {
         const newTasks = tasks.map((task) =>
@@ -65,7 +62,45 @@ export const GrowthContainer = ({
 
         const shareText = `🌳 SkillBloom Update: ${title}\n${emoji} Progress: ${Math.round(progress)}%\n\n${completedTasks}\n${nextTaskText}\n\nGrow your own skills at using SkillBloom!`;
 
-        copyToClipboard(shareText);
+        copyToClipboard(shareText, showToast);
+    };
+
+    const handleExport = () => {
+        const exportData = { title, description, tasks };
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `skillbloom-${title.toLowerCase().replace(/\s+/g, "-")}-${new Date().toISOString().split("T")[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("Progress exported! Keep this file to restore later.", "success");
+    };
+
+    const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const imported = JSON.parse(event.target?.result as string);
+                if (imported.tasks && Array.isArray(imported.tasks)) {
+                    setTasks(imported.tasks);
+                    onUpdate(imported.tasks);
+                    showToast("Progress imported successfully!", "success");
+                } else {
+                    showToast("Invalid file format", "error");
+                }
+            } catch {
+                showToast("Failed to parse import file", "error");
+            }
+        };
+        reader.readAsText(file);
+        // Reset input so same file can be selected again
+        e.target.value = "";
     };
 
     return (
@@ -139,7 +174,7 @@ export const GrowthContainer = ({
                     <h2 className="text-xl font-bold text-green-900 dark:text-green-100">{title}</h2>
                     <p className="text-sm text-green-600 dark:text-green-300">{description}</p>
                 </div>
-                <div className="flex gap-2 mt-2">
+                <div className="flex gap-2 mt-2 flex-wrap">
                     <button
                         onClick={() => {
                             playPop();
@@ -156,8 +191,27 @@ export const GrowthContainer = ({
                         }}
                         className="text-xs text-white/90 hover:text-white bg-bloom-primary/80 hover:bg-bloom-primary px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors font-medium flex items-center gap-1 shadow-lg shadow-bloom-primary/20"
                     >
-                        Share Progress 📤
+                        Share 📤
                     </button>
+                    <button
+                        onClick={() => {
+                            playPop();
+                            handleExport();
+                        }}
+                        className="text-xs text-white/80 hover:text-white bg-blue-500/70 hover:bg-blue-500 px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors font-medium"
+                    >
+                        Export 💾
+                    </button>
+                    <label className="text-xs text-white/80 hover:text-white bg-purple-500/70 hover:bg-purple-500 px-3 py-1.5 rounded-lg backdrop-blur-sm transition-colors font-medium cursor-pointer">
+                        Import 📁
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".json"
+                            onChange={handleImport}
+                            className="hidden"
+                        />
+                    </label>
                 </div>
             </motion.div>
 
