@@ -93,7 +93,8 @@ export const TaskChecklist = ({ tasks, onToggle, selectedIndex = -1 }: TaskCheck
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9 }}
-                        className="absolute inset-0 flex items-center justify-center bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-10 rounded-[2rem]"
+                        className="absolute inset-0 flex items-center justify-center backdrop-blur-md z-10 rounded-xl"
+                        style={{ backgroundColor: 'var(--bloom-card)' }}
                     >
                         <div className="text-center p-8">
                             <motion.div
@@ -104,12 +105,13 @@ export const TaskChecklist = ({ tasks, onToggle, selectedIndex = -1 }: TaskCheck
                             >
                                 🏆
                             </motion.div>
-                            <h4 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">Quest Complete!</h4>
-                            <p className="text-gray-500 dark:text-gray-400 mb-6">You&apos;ve mastered this skill tree.</p>
+                            <h4 className="text-2xl font-bold mb-2" style={{ color: 'var(--bloom-text)' }}>Quest Complete!</h4>
+                            <p className="mb-6" style={{ color: 'var(--bloom-text-muted)' }}>You&apos;ve mastered this skill tree.</p>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="px-6 py-2 bg-green-500 text-white rounded-full font-bold shadow-lg shadow-green-500/30 hover:shadow-green-500/50 transition-shadow"
+                                className="px-6 py-2 text-white rounded-full font-bold shadow-lg transition-shadow"
+                                style={{ backgroundColor: 'var(--bloom-primary)' }}
                                 onClick={() => {/* Optional: Reset or Navigate */ }}
                             >
                                 Continue Journey
@@ -182,11 +184,18 @@ const Card = ({
                             className={clsx(
                                 "w-6 h-6 rounded-full flex items-center justify-center border transition-all duration-300",
                                 isCompleted
-                                    ? "bg-green-500 border-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]"
+                                    ? "border-transparent shadow-[0_0_10px_rgba(16,185,129,0.4)]"
                                     : isActive
-                                        ? "bg-white dark:bg-gray-700 border-green-400 dark:border-green-500 animate-pulse"
-                                        : "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+                                        ? "border-bloom-primary animate-pulse"
+                                        : "border-bloom-border"
                             )}
+                            style={{
+                                backgroundColor: isCompleted
+                                    ? 'var(--bloom-primary)'
+                                    : isActive
+                                        ? 'var(--bloom-card)'
+                                        : 'var(--bloom-card-hover)'
+                            }}
                         >
                             <AnimatePresence mode="wait">
                                 {isCompleted && (
@@ -223,14 +232,14 @@ const Card = ({
                         <div className="flex items-start justify-between gap-2">
                             <motion.h4
                                 layout="position"
-                                className={clsx(
-                                    "font-bold text-sm leading-tight transition-colors",
-                                    isCompleted
-                                        ? "text-green-800/70 dark:text-green-200/70"
+                                className="font-bold text-sm leading-tight transition-colors"
+                                style={{
+                                    color: isCompleted
+                                        ? 'var(--bloom-primary)'
                                         : isLocked
-                                            ? "text-gray-400 dark:text-gray-500"
-                                            : "text-gray-800 dark:text-gray-200"
-                                )}
+                                            ? 'var(--bloom-text-muted)'
+                                            : 'var(--bloom-text)'
+                                }}
                             >
                                 {task.label}
                             </motion.h4>
@@ -238,7 +247,7 @@ const Card = ({
                             {!isLocked && (
                                 <motion.div
                                     animate={{ rotate: isExpanded ? 180 : 0 }}
-                                    className="text-gray-400 dark:text-gray-500"
+                                    style={{ color: 'var(--bloom-text-muted)' }}
                                 >
                                     <ChevronDown size={16} />
                                 </motion.div>
@@ -249,25 +258,28 @@ const Card = ({
                             <p
                                 className={clsx(
                                     "text-xs leading-relaxed transition-all duration-300",
-                                    isCompleted
-                                        ? "text-green-800/80 dark:text-green-300/60"
-                                        : isLocked
-                                            ? "text-gray-500 dark:text-gray-600"
-                                            : "text-gray-700 dark:text-gray-300",
                                     !isExpanded && "line-clamp-2"
                                 )}
+                                style={{
+                                    color: isLocked
+                                        ? 'var(--bloom-text-muted)'
+                                        : 'var(--bloom-text-muted)',
+                                    opacity: isLocked ? 0.6 : 1
+                                }}
                             >
                                 {task.description}
                             </p>
 
                             {/* Fade out gradient for collapsed text */}
                             {!isExpanded && !isLocked && (
-                                <div className={clsx(
-                                    "absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t",
-                                    isCompleted
-                                        ? "from-green-50/50 dark:from-green-900/10"
-                                        : "from-white dark:from-gray-800"
-                                )} />
+                                <div
+                                    className="absolute bottom-0 left-0 right-0 h-6"
+                                    style={{
+                                        background: isCompleted
+                                            ? 'linear-gradient(to top, rgba(var(--bloom-primary-rgb, 16, 185, 129), 0.05), transparent)'
+                                            : 'linear-gradient(to top, var(--bloom-card), transparent)'
+                                    }}
+                                />
                             )}
                         </motion.div>
 
