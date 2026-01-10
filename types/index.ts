@@ -11,9 +11,17 @@ export interface Task {
 }
 
 export interface Roadmap {
+    id: string;
     title: string;
     description: string;
     tasks: Task[];
+    createdAt: number;
+    lastActive: number;
+}
+
+export interface UserData {
+    activeRoadmapId: string | null;
+    roadmaps: Record<string, Roadmap>;
 }
 
 export type TaskState = "locked" | "active" | "completed";
