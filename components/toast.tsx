@@ -46,22 +46,22 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     const getIcon = (type: ToastType) => {
         switch (type) {
             case "success":
-                return <CheckCircle className="w-5 h-5 text-green-500" />;
+                return <CheckCircle className="w-5 h-5" style={{ color: 'var(--bloom-primary)' }} />;
             case "error":
-                return <AlertCircle className="w-5 h-5 text-red-500" />;
+                return <AlertCircle className="w-5 h-5 text-red-400" />;
             default:
-                return <Info className="w-5 h-5 text-blue-500" />;
+                return <Info className="w-5 h-5" style={{ color: 'var(--bloom-primary)' }} />;
         }
     };
 
-    const getBgColor = (type: ToastType) => {
+    const getAccentColor = (type: ToastType) => {
         switch (type) {
             case "success":
-                return "bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800";
+                return 'var(--bloom-primary)';
             case "error":
-                return "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800";
+                return '#ef4444';
             default:
-                return "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800";
+                return 'var(--bloom-primary)';
         }
     };
 
@@ -76,15 +76,23 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
                             initial={{ opacity: 0, y: 20, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg backdrop-blur-sm ${getBgColor(toast.type)}`}
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg"
+                            style={{
+                                backgroundColor: 'var(--bloom-card)',
+                                borderWidth: '1px',
+                                borderStyle: 'solid',
+                                borderColor: getAccentColor(toast.type),
+                                borderLeftWidth: '4px'
+                            }}
                         >
                             {getIcon(toast.type)}
-                            <p className="text-sm font-medium text-bloom-text">{toast.message}</p>
+                            <p className="text-sm font-medium" style={{ color: 'var(--bloom-text)' }}>{toast.message}</p>
                             <button
                                 onClick={() => dismissToast(toast.id)}
-                                className="ml-2 p-1 hover:bg-black/5 rounded-lg transition-colors"
+                                className="ml-2 p-1 rounded-lg transition-colors hover:opacity-70"
+                                style={{ color: 'var(--bloom-text-muted)' }}
                             >
-                                <X className="w-4 h-4 text-bloom-text/60" />
+                                <X className="w-4 h-4" />
                             </button>
                         </motion.div>
                     ))}
