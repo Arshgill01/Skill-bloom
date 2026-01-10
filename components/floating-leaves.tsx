@@ -19,15 +19,15 @@ const seededRandom = (seed: number): number => {
     return x - Math.floor(x);
 };
 
-// Pre-computed static leaf data to avoid hydration issues
-const leaves: Leaf[] = Array.from({ length: 12 }, (_, i) => ({
+// Reduced to 3 subtle particles for minimal, professional feel
+const leaves: Leaf[] = Array.from({ length: 3 }, (_, i) => ({
     id: i,
-    x: 5 + seededRandom(i * 1) * 90,
-    size: 12 + seededRandom(i * 2) * 16,
-    duration: 15 + seededRandom(i * 3) * 20,
-    delay: seededRandom(i * 4) * -20,
+    x: 15 + seededRandom(i * 1) * 70,
+    size: 10 + seededRandom(i * 2) * 8,
+    duration: 25 + seededRandom(i * 3) * 15,
+    delay: seededRandom(i * 4) * -10,
     rotation: seededRandom(i * 5) * 360,
-    type: seededRandom(i * 6) > 0.3 ? "leaf" : "petal",
+    type: "leaf" as const,
 }));
 
 export const FloatingLeaves = () => {
