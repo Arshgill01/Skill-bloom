@@ -9,38 +9,29 @@ import { MiniTree } from "@/components/tree/tree-renderer";
 import { getTreeConfig } from "@/components/tree/tree-types";
 import { Task, Roadmap } from "@/types";
 import { useToast } from "@/components/toast";
+import { usePersistence } from "@/hooks/usePersistence"; // Assuming this import is needed
 
 type RoadmapData = Roadmap;
 
 export const RoadmapGenerator = () => {
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState<RoadmapData | null>(null);
     const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
-    const [isHydrated, setIsHydrated] = useState(false);
     const { showToast } = useToast();
 
-    // Load from localStorage on mount
-    React.useEffect(() => {
-        const saved = localStorage.getItem("skill-bloom-data");
-        if (saved) {
-            try {
-                setData(JSON.parse(saved));
-            } catch (e) {
-                console.error("Failed to load saved data");
-            }
-        }
-        setIsHydrated(true);
-    }, []);
+    // Persistence integration
+    const {
+        userData,
+        isHydrated,
+        addRoadmap,
+        updateRoadmap,
+        setActiveRoadmap
+    } = usePersistence();
 
-    const saveData = (newData: RoadmapData | null) => {
-        setData(newData);
-        if (newData) {
-            localStorage.setItem("skill-bloom-data", JSON.stringify(newData));
-        } else {
-            localStorage.removeItem("skill-bloom-data");
-        }
-    };
+    // Derived state: Current active roadmap
+    const activeRoadmap = userData?.activeRoadmapId && userData.roadmaps[userData.activeRoadmapId]
+        ? userData.roadmaps[userData.activeRoadmapId]
+        : null;
 
     const handleGenerate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -60,7 +51,17 @@ export const RoadmapGenerator = () => {
                 return;
             }
 
-            saveData(json);
+            // Create new roadmap object
+            const newRoadmap: Roadmap = {
+                id: crypto.randomUUID(),
+                title: json.title,
+                description: json.description,
+                tasks: json.tasks,
+                createdAt: Date.now(),
+                lastActive: Date.now(),
+            };
+
+            addRoadmap(newRoadmap);
             showToast(`🌱 Your "${json.title}" tree is ready to grow!`, "success");
         } catch (err) {
             console.error(err);
@@ -71,14 +72,15 @@ export const RoadmapGenerator = () => {
     };
 
     const handleReset = () => {
-        saveData(null);
+        // Just deselect the current roadmap to go back to "new" screen
+        setActiveRoadmap("");
         setPrompt("");
     };
 
     const handleTaskUpdate = (updatedTasks: Task[]) => {
-        if (!data) return;
-        const newData = { ...data, tasks: updatedTasks };
-        saveData(newData);
+        if (!activeRoadmap) return;
+        const updatedRoadmap = { ...activeRoadmap, tasks: updatedTasks };
+        updateRoadmap(updatedRoadmap);
     };
 
     return (
