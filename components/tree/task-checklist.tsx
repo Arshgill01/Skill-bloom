@@ -10,9 +10,10 @@ import { Task } from "@/types";
 interface TaskChecklistProps {
     tasks: Task[];
     onToggle: (id: string) => void;
+    selectedIndex?: number;  // For vim navigation highlighting
 }
 
-export const TaskChecklist = ({ tasks, onToggle }: TaskChecklistProps) => {
+export const TaskChecklist = ({ tasks, onToggle, selectedIndex = -1 }: TaskChecklistProps) => {
     const completedCount = tasks.filter((t) => t.completed).length;
     const progress = (completedCount / tasks.length) * 100;
     const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -33,48 +34,39 @@ export const TaskChecklist = ({ tasks, onToggle }: TaskChecklistProps) => {
     };
 
     return (
-        <div className="bg-white/80 dark:bg-black/60 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/50 dark:border-white/10 p-6 w-full max-w-xl relative overflow-hidden transition-colors duration-300">
-            {/* Background decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-green-200/20 dark:bg-green-900/20 rounded-full blur-3xl -z-10 -mr-16 -mt-16 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-200/20 dark:bg-blue-900/20 rounded-full blur-3xl -z-10 -ml-16 -mb-16 pointer-events-none" />
-
+        <div className="bg-bloom-card/95 border border-bloom-border rounded-xl shadow-lg p-5 w-full max-w-xl relative overflow-hidden">
             {/* Header */}
-            <div className="flex items-end justify-between mb-8 px-2">
+            <div className="flex items-end justify-between mb-4 px-1">
                 <div>
-                    <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 tracking-tight flex items-center gap-2">
-                        Quest Log <Trophy className="text-yellow-500" size={20} />
+                    <h3 className="text-lg font-bold text-bloom-text tracking-tight flex items-center gap-2">
+                        Quest Log <Trophy className="text-bloom-accent" size={18} />
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium mt-1">
-                        Your path to mastery
+                    <p className="text-xs text-bloom-text-muted mt-0.5 flex items-center gap-2">
+                        Complete tasks in order
+                        <span className="kbd text-[10px] px-1 py-0 h-4">?</span>
+                        <span className="text-bloom-text-muted/60">for keys</span>
                     </p>
                 </div>
                 <div className="text-right">
-                    <span className="text-3xl font-black text-green-600 dark:text-green-400">
+                    <span className="text-2xl font-bold text-bloom-primary font-mono">
                         {Math.round(progress)}%
                     </span>
                 </div>
             </div>
 
-            {/* Enhanced Progress bar */}
-            <div className="relative h-4 bg-gray-100 dark:bg-gray-800 rounded-full mb-8 overflow-hidden shadow-inner border border-gray-200/50 dark:border-gray-700/50 mx-1">
-                {/* Shimmer effect background */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent w-full h-full -translate-x-full animate-[shimmer_2s_infinite]" />
-
+            {/* Progress bar */}
+            <div className="relative h-2 bg-bloom-muted rounded-full mb-4 overflow-hidden mx-1">
                 <motion.div
-                    className="h-full bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 rounded-full shadow-[0_2px_10px_rgba(16,185,129,0.3)] relative overflow-hidden"
+                    className="h-full bg-gradient-to-r from-bloom-primary to-bloom-accent rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
                     transition={{ type: "spring", stiffness: 50, damping: 15 }}
-                >
-                    {/* Glossy shine on progress bar */}
-                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-white/50" />
-                    <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-black/5" />
-                </motion.div>
+                />
             </div>
 
             {/* Task list container */}
             <LayoutGroup>
-                <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2 -mr-2 scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-700 scrollbar-track-transparent pb-4">
+                <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2 -mr-2 scrollbar-thin scrollbar-thumb-bloom-muted scrollbar-track-transparent pb-2">
                     {tasks.map((task, index) => {
                         const state = getTaskState(index);
                         return (
@@ -87,6 +79,7 @@ export const TaskChecklist = ({ tasks, onToggle }: TaskChecklistProps) => {
                                 setExpanded={() => setExpandedId(expandedId === task.id ? null : task.id)}
                                 state={state}
                                 playPop={playPop}
+                                isSelected={index === selectedIndex}
                             />
                         );
                     })}
