@@ -60,11 +60,17 @@ Get your garden growing in under 2 minutes:
     ```
     Open [http://localhost:3000](http://localhost:3000) to start planting.
 
+
 ## 📸 Gallery
 
-|                                                         Dark Mode                                                          |                                                         Quest Complete                                                          |
-| :------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------: |
-| <img src="https://github.com/user-attachments/assets/d10a8678-f356-4e80-b552-74ad9c3907fe" alt="Dark Mode" width="100%" /> | <img src="https://github.com/user-attachments/assets/882c9f46-3131-4d70-8189-881116dedee5" alt="Quest Complete" width="100%" /> |
+| Light Mode | Dark Mode |
+| :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/a75a8c7f-5a90-4f7d-a012-6719a2401237" alt="Light Mode" width="100%" /> | <img src="https://github.com/user-attachments/assets/78d0b495-92f8-4bdd-a5b0-57051cb7cbe0" alt="Dark Mode" width="100%" /> |
+| **Autumn Mode** | **Quest Complete** |
+| <img src="https://github.com/user-attachments/assets/197338c6-c3df-4422-8b8e-5b4b01880774" alt="Autumn Mode" width="100%" /> | <img src="https://github.com/user-attachments/assets/0a1b5ad4-2000-41c3-885f-0791e0290274" alt="Quest Complete" width="100%" /> |
+
+
+
 
 ## License
 
