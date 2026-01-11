@@ -2,7 +2,8 @@
 
 > **Grow your skills, literally.** > A gamified learning platform that turns your educational roadmap into a living, breathing digital garden.
 
-![The Garden](https://github.com/user-attachments/assets/088dba59-5a5e-451c-83b4-bd26fa7c60b7)
+
+![The Garden](https://github.com/user-attachments/assets/772e9e41-5ba7-4fee-bd75-ff47523ccd98)
 
 ## The Concept
 
