@@ -10,9 +10,7 @@ import { getTreeConfig } from "@/components/tree/tree-types";
 import { Task, Roadmap } from "@/types";
 import { useToast } from "@/components/toast";
 import { GardenManager } from "@/components/garden-manager";
-import { usePersistence } from "@/hooks/use-persistence"; // Assuming this import is needed
-
-type RoadmapData = Roadmap;
+import { usePersistence } from "@/hooks/use-persistence";
 
 export const RoadmapGenerator = () => {
     const [prompt, setPrompt] = useState("");

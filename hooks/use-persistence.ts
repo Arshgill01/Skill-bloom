@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { UserData, Roadmap, Task } from "@/types";
+import { UserData, Roadmap } from "@/types";
 import { useToast } from "@/components/toast";
 
 const STORAGE_KEY = "skill-bloom-user-data";
@@ -97,7 +97,7 @@ export const usePersistence = () => {
 
     const deleteRoadmap = useCallback((id: string) => {
         if (!userData) return;
-        const { [id]: deleted, ...remaining } = userData.roadmaps;
+        const { [id]: _deleted, ...remaining } = userData.roadmaps;
         const remainingIds = Object.keys(remaining);
 
         const newData = {
