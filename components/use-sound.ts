@@ -63,5 +63,47 @@ export const useSound = () => {
         }
     }, []);
 
-    return { playPop, playSuccess };
+    // Triumphant fanfare for level-ups
+    const playLevelUp = useCallback(() => {
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+            if (!AudioContext) return;
+
+            const ctx = new AudioContext();
+
+            // Triumphant chord progression (C major -> G major -> C major high)
+            const chords = [
+                [261.63, 329.63, 392.00], // C major
+                [392.00, 493.88, 587.33], // G major
+                [523.25, 659.25, 783.99], // C major (high)
+            ];
+
+            chords.forEach((chord, chordIndex) => {
+                chord.forEach((freq) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    const startTime = ctx.currentTime + chordIndex * 0.25;
+
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(freq, startTime);
+
+                    gain.gain.setValueAtTime(0, startTime);
+                    gain.gain.linearRampToValueAtTime(0.08, startTime + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.5);
+
+                    osc.start(startTime);
+                    osc.stop(startTime + 0.5);
+                });
+            });
+        } catch {
+            // Ignore audio errors
+        }
+    }, []);
+
+    return { playPop, playSuccess, playLevelUp };
 };
