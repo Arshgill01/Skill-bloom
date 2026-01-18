@@ -352,14 +352,22 @@ export const GrowthContainer = ({
                 )}
             </AnimatePresence>
 
-            {/* Task Checklist Panel - Replaces FloatingTaskPanel */}
-            <div className="absolute top-4 right-4 z-20 w-[420px]">
+            {/* Task Checklist Panel - Hidden on mobile, visible on larger screens */}
+            <div className="absolute top-4 right-4 z-20 w-[420px] max-w-[calc(100vw-2rem)] hidden md:block">
                 <TaskChecklist
                     tasks={tasks}
                     onToggle={handleToggle}
                     selectedIndex={selectedIndex}
                 />
             </div>
+
+            {/* Mobile Task Button */}
+            <button
+                onClick={() => setShowHelp(true)}
+                className="md:hidden fixed bottom-20 right-4 z-30 bg-bloom-primary text-white p-4 rounded-full shadow-lg"
+            >
+                <span className="text-lg">📋</span>
+            </button>
 
             {/* Vim Help Modal */}
             {showHelp && <VimHelpModal onClose={() => setShowHelp(false)} />}
