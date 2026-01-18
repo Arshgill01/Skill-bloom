@@ -2,12 +2,19 @@
  * Shared type definitions for SkillBloom
  */
 
+export interface TaskResource {
+    docs?: { title: string; url: string };
+    video?: { title: string; channel: string; url: string };
+    tip?: string;
+}
+
 export interface Task {
     id: string;
     label: string;
     description: string;
     completed: boolean;
     searchQuery?: string;
+    resources?: TaskResource;
 }
 
 export interface Roadmap {
