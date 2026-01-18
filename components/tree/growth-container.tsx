@@ -84,7 +84,7 @@ export const GrowthContainer = ({
                 playLevelUp();
             }
         }
-    }, [tasks, onUpdate, gamification, fireSmallBurst, fireCelebration, showToast]);
+    }, [tasks, onUpdate, gamification, fireSmallBurst, fireCelebration, showToast, playLevelUp]);
 
     const handleUndo = useCallback(() => {
         if (history.length === 0) return;

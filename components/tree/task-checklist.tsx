@@ -147,10 +147,6 @@ const Card = ({
     const isActive = state === "active";
     const isCompleted = state === "completed";
 
-    // Find if this is the FIRST active task (next recommended)
-    const isNextRecommended = isActive && index === 0 ||
-        (isActive && task.id === task.id); // Will be refined with proper logic
-
     return (
         <motion.div
             layout
