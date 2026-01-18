@@ -207,43 +207,74 @@ export const RoadmapGenerator = () => {
                             </button>
                         </form>
 
-                        <div className="mt-8 flex flex-col items-center gap-4">
-                            <div className="flex gap-3 justify-center text-sm text-bloom-text-muted">
-                                <span>Try:</span>
-                                {/* Quick prompts */}
-                                {["Learn React", "Master Python", "Become a chef", "Learn Guitar"].map((examplePrompt) => (
-                                    <button
-                                        key={examplePrompt}
-                                        type="button"
-                                        onClick={() => setPrompt(examplePrompt)}
-                                        onMouseEnter={() => setHoveredSkill(examplePrompt)}
+                        {/* Demo Quick Launch */}
+                        <div className="mt-10 w-full">
+                            <div className="flex items-center justify-center gap-2 mb-4 text-sm text-bloom-text-muted">
+                                <Zap className="w-4 h-4 text-yellow-400" />
+                                <span>Instant Demo</span>
+                            </div>
+                            <div className="grid grid-cols-3 gap-3">
+                                {[
+                                    { key: "react" as const, label: "Learn React", emoji: "⚛️", color: "from-cyan-500 to-blue-500" },
+                                    { key: "python" as const, label: "Master Python", emoji: "🐍", color: "from-yellow-400 to-green-500" },
+                                    { key: "design" as const, label: "UI/UX Design", emoji: "🎨", color: "from-pink-500 to-purple-500" },
+                                ].map((demo) => (
+                                    <motion.button
+                                        key={demo.key}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => handleDemoLaunch(demo.key)}
+                                        onMouseEnter={() => setHoveredSkill(demo.label)}
                                         onMouseLeave={() => setHoveredSkill(null)}
-                                        className="hover:text-bloom-primary transition-colors underline decoration-dotted underline-offset-4 relative"
+                                        className="relative overflow-hidden p-4 rounded-xl border border-bloom-border bg-bloom-card hover:bg-bloom-card-hover transition-all group"
                                     >
-                                        {examplePrompt}
-                                    </button>
+                                        <div className={`absolute inset-0 bg-gradient-to-br ${demo.color} opacity-0 group-hover:opacity-10 transition-opacity`} />
+                                        <div className="text-2xl mb-2">{demo.emoji}</div>
+                                        <div className="text-sm font-medium text-bloom-text">{demo.label}</div>
+                                        <div className="text-xs text-bloom-text-muted mt-1">Click to start instantly</div>
+                                    </motion.button>
                                 ))}
                             </div>
-
-                            {/* Tree Preview on Hover */}
-                            <AnimatePresence mode="wait">
-                                {hoveredSkill && (
-                                    <motion.div
-                                        key={hoveredSkill}
-                                        initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                        exit={{ opacity: 0, y: -10, scale: 0.9 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="flex flex-col items-center gap-2 p-4 bg-bloom-card border border-bloom-border rounded-xl shadow-lg"
-                                    >
-                                        <MiniTree config={getTreeConfig(hoveredSkill)} size={80} />
-                                        <span className="text-xs text-bloom-text-muted">
-                                            {getTreeConfig(hoveredSkill).emoji} {getTreeConfig(hoveredSkill).name} Tree
-                                        </span>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
                         </div>
+
+                        {/* Or use AI */}
+                        <div className="mt-6 flex items-center gap-2 text-xs text-bloom-text-muted">
+                            <span className="h-px flex-1 bg-bloom-border" />
+                            <span>or type anything above to generate with AI</span>
+                            <span className="h-px flex-1 bg-bloom-border" />
+                        </div>
+
+                        {/* Tree Preview on Hover */}
+                        <AnimatePresence mode="wait">
+                            {hoveredSkill && (
+                                <motion.div
+                                    key={hoveredSkill}
+                                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="mt-4 flex flex-col items-center gap-2 p-4 bg-bloom-card border border-bloom-border rounded-xl shadow-lg"
+                                >
+                                    <MiniTree config={getTreeConfig(hoveredSkill)} size={80} />
+                                    <span className="text-xs text-bloom-text-muted">
+                                        {getTreeConfig(hoveredSkill).emoji} {getTreeConfig(hoveredSkill).name} Tree
+                                    </span>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        {/* Demo Reset Button */}
+                        {Object.keys(userData?.roadmaps || {}).length > 0 && (
+                            <motion.button
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                onClick={handleDemoReset}
+                                className="mt-6 flex items-center gap-2 text-xs text-bloom-text-muted hover:text-bloom-text transition-colors mx-auto"
+                            >
+                                <RotateCcw className="w-3 h-3" />
+                                Reset Demo
+                            </motion.button>
+                        )}
                     </motion.div>
                 ) : (
                     <motion.div
