@@ -50,7 +50,7 @@ export const GrowthContainer = ({
     }, [initialTasks]);
 
     const treeConfig = getTreeConfig(title);
-    const { playPop, playSuccess } = useSound();
+    const { playPop, playSuccess, playLevelUp } = useSound();
     const { showToast } = useToast();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { fireCelebration, fireSmallBurst } = useConfetti();
@@ -81,6 +81,7 @@ export const GrowthContainer = ({
             if (result.leveledUp) {
                 showToast(`🎉 Level Up! You're now Level ${result.newLevel}!`, "success");
                 fireCelebration();
+                playLevelUp();
             }
         }
     }, [tasks, onUpdate, gamification, fireSmallBurst, fireCelebration, showToast]);
