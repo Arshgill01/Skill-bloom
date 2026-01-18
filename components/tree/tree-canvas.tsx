@@ -180,7 +180,7 @@ export const TreeCanvas = ({ nodes, edges }: TreeCanvasProps) => {
                 ))}
 
                 {/* Nodes */}
-                {layoutNodes.map((node, _index) => (
+                {layoutNodes.map((node) => (
                     <BloomNode
                         key={node.id}
                         x={node.x}

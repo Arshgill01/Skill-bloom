@@ -97,7 +97,9 @@ export const usePersistence = () => {
 
     const deleteRoadmap = useCallback((id: string) => {
         if (!userData) return;
-        const { [id]: _deleted, ...remaining } = userData.roadmaps;
+        const remaining = Object.fromEntries(
+            Object.entries(userData.roadmaps).filter(([key]) => key !== id)
+        );
         const remainingIds = Object.keys(remaining);
 
         const newData = {
