@@ -83,6 +83,6 @@ export const resetDemoData = () => {
     // Clear gamification data
     localStorage.removeItem("skill-bloom-gamification");
 
-    // Optionally clear all user data for a completely fresh demo
-    // localStorage.removeItem("skill-bloom-user-data");
+    // Reset onboarding tour
+    localStorage.removeItem("skill-bloom-onboarding-completed");
 };
