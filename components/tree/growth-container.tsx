@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useCallback, useRef } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useCallback, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { TreeRenderer } from "./tree-renderer";
 import { getTreeConfig } from "./tree-types";
 
@@ -10,6 +10,9 @@ import { useSound } from "@/components/use-sound";
 import { useToast } from "@/components/toast";
 import { Task } from "@/types";
 import { useVimNavigation, VimHelpModal } from "@/hooks/use-vim-navigation";
+import { useConfetti } from "@/hooks/use-confetti";
+import { useGamification } from "@/hooks/use-gamification";
+import { XpBar, XpGainIndicator } from "@/components/xp-bar";
 
 const copyToClipboard = async (text: string, showToast: (msg: string, type: "success" | "error" | "info") => void) => {
     try {
@@ -47,19 +50,40 @@ export const GrowthContainer = ({
     }, [initialTasks]);
 
     const treeConfig = getTreeConfig(title);
-    const { playPop } = useSound();
+    const { playPop, playSuccess } = useSound();
     const { showToast } = useToast();
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const { fireCelebration, fireSmallBurst } = useConfetti();
+    const gamification = useGamification();
+    const [xpGain, setXpGain] = useState<{ xp: number; streak: number } | null>(null);
+    const prevCompletedRef = useRef(tasks.filter(t => t.completed).length);
 
     const handleToggle = useCallback((id: string) => {
         // specific check to prevent undoing if task is locked? handled in UI but good to know
         setHistory(prev => [...prev, tasks]); // Push current state to history
-        const newTasks = tasks.map((task) =>
-            task.id === id ? { ...task, completed: !task.completed } : task
+        const task = tasks.find(t => t.id === id);
+        const wasCompleted = task?.completed;
+        const newTasks = tasks.map((t) =>
+            t.id === id ? { ...t, completed: !t.completed } : t
         );
         setTasks(newTasks);
         onUpdate(newTasks);
-    }, [tasks, onUpdate]);
+
+        // Track XP for completions (not uncompletes)
+        if (!wasCompleted && gamification.isHydrated) {
+            const result = gamification.recordTaskCompletion();
+            setXpGain({ xp: result.earnedXp, streak: result.streakBonus });
+            fireSmallBurst();
+
+            // Clear XP indicator after 2 seconds
+            setTimeout(() => setXpGain(null), 2000);
+
+            if (result.leveledUp) {
+                showToast(`🎉 Level Up! You're now Level ${result.newLevel}!`, "success");
+                fireCelebration();
+            }
+        }
+    }, [tasks, onUpdate, gamification, fireSmallBurst, fireCelebration, showToast]);
 
     const handleUndo = useCallback(() => {
         if (history.length === 0) return;
