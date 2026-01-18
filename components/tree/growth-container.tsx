@@ -144,6 +144,16 @@ export const GrowthContainer = ({
     const progress = (completedCount / tasks.length) * 100;
     const canUndo = history.length > 0;
 
+    // Fire celebration on 100% completion
+    useEffect(() => {
+        if (progress === 100 && prevCompletedRef.current < tasks.length) {
+            fireCelebration();
+            playSuccess();
+            showToast("🎉 Congratulations! You've completed the entire skill tree!", "success");
+        }
+        prevCompletedRef.current = completedCount;
+    }, [progress, completedCount, tasks.length, fireCelebration, playSuccess, showToast]);
+
     const handleShare = () => {
         const completedTasks = tasks.filter(t => t.completed).map(t => `✅ ${t.label}`).join("\n");
         const nextTask = tasks.find(t => !t.completed);
