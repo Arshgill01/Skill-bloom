@@ -147,6 +147,10 @@ const Card = ({
     const isActive = state === "active";
     const isCompleted = state === "completed";
 
+    // Find if this is the FIRST active task (next recommended)
+    const isNextRecommended = isActive && index === 0 ||
+        (isActive && task.id === task.id); // Will be refined with proper logic
+
     return (
         <motion.div
             layout
@@ -163,6 +167,24 @@ const Card = ({
                         : "bg-bloom-card border-bloom-border hover:border-bloom-primary/30"
             )}
         >
+            {/* Pulsing Glow for Active Task */}
+            {isActive && (
+                <motion.div
+                    className="absolute inset-0 rounded-lg pointer-events-none"
+                    animate={{
+                        boxShadow: [
+                            "0 0 0 0 rgba(16, 185, 129, 0)",
+                            "0 0 20px 4px rgba(16, 185, 129, 0.3)",
+                            "0 0 0 0 rgba(16, 185, 129, 0)",
+                        ],
+                    }}
+                    transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                    }}
+                />
+            )}
             <div className="p-3">
                 <div className="flex gap-3">
                     {/* Checkbox Area */}
