@@ -301,8 +301,54 @@ const Card = ({
                             )}
                         </motion.div>
 
-                        {/* Learn Button (Smart Resource) */}
-                        {isExpanded && !isLocked && task.searchQuery && (
+                        {/* Curated Resources Panel */}
+                        {isExpanded && !isLocked && task.resources && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="mt-3 pt-3 border-t border-bloom-border space-y-2"
+                            >
+                                {/* Documentation Link */}
+                                {task.resources.docs && (
+                                    <a
+                                        href={task.resources.docs.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 text-xs text-bloom-text-muted hover:text-bloom-primary transition-colors group"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <span className="w-5 h-5 rounded bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500/20">📖</span>
+                                        <span className="truncate">{task.resources.docs.title}</span>
+                                    </a>
+                                )}
+
+                                {/* Video Link */}
+                                {task.resources.video && (
+                                    <a
+                                        href={task.resources.video.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 text-xs text-bloom-text-muted hover:text-red-500 transition-colors group"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <span className="w-5 h-5 rounded bg-red-500/10 flex items-center justify-center text-red-500 group-hover:bg-red-500/20">🎬</span>
+                                        <span className="truncate">{task.resources.video.title}</span>
+                                        <span className="text-[10px] text-bloom-text-muted/60">• {task.resources.video.channel}</span>
+                                    </a>
+                                )}
+
+                                {/* Pro Tip */}
+                                {task.resources.tip && (
+                                    <div className="flex items-start gap-2 text-xs bg-amber-500/5 border border-amber-500/20 rounded-lg p-2 mt-2">
+                                        <span className="text-amber-500 flex-shrink-0">💡</span>
+                                        <span className="text-bloom-text-muted italic">{task.resources.tip}</span>
+                                    </div>
+                                )}
+                            </motion.div>
+                        )}
+
+                        {/* Fallback: Learn Button for tasks without curated resources */}
+                        {isExpanded && !isLocked && !task.resources && task.searchQuery && (
                             <motion.div
                                 initial={{ opacity: 0, y: 5 }}
                                 animate={{ opacity: 1, y: 0 }}
