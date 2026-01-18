@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, Sparkles, TreeDeciduous } from "lucide-react";
+import { Loader2, Sparkles, TreeDeciduous, Zap, RotateCcw } from "lucide-react";
 import { GrowthContainer } from "@/components/tree/growth-container";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MiniTree } from "@/components/tree/tree-renderer";
@@ -11,6 +11,7 @@ import { Task, Roadmap } from "@/types";
 import { useToast } from "@/components/toast";
 import { GardenManager } from "@/components/garden-manager";
 import { usePersistence } from "@/hooks/use-persistence";
+import { getDemoRoadmap, resetDemoData } from "@/lib/demo-data";
 
 export const RoadmapGenerator = () => {
     const [prompt, setPrompt] = useState("");
@@ -88,6 +89,21 @@ export const RoadmapGenerator = () => {
         setActiveRoadmap("");
         setPrompt("");
         setIsGardenManagerOpen(false);
+    };
+
+    // Demo mode - instant roadmap loading
+    const handleDemoLaunch = (key: "react" | "python" | "design") => {
+        const demoRoadmap = getDemoRoadmap(key);
+        addRoadmap(demoRoadmap);
+        showToast(`⚡ Demo loaded: ${demoRoadmap.title}`, "success");
+    };
+
+    // Reset all demo data for fresh presentation
+    const handleDemoReset = () => {
+        resetDemoData();
+        // Clear all roadmaps for fresh demo
+        Object.keys(userData?.roadmaps || {}).forEach(id => deleteRoadmap(id));
+        showToast("🔄 Demo reset complete! Fresh start.", "info");
     };
 
     return (
