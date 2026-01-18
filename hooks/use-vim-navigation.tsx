@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useMemo } from "react";
 import { Task } from "@/types";
 
 interface UseVimNavigationOptions {
@@ -37,10 +37,21 @@ export const useVimNavigation = ({
     onUndo,
     enabled = true,
 }: UseVimNavigationOptions): UseVimNavigationReturn => {
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [rawSelectedIndex, setRawSelectedIndex] = useState(0);
     const [vimEnabled, setVimEnabled] = useState(true);
     const [showHelp, setShowHelp] = useState(false);
     const [gPressed, setGPressed] = useState(false);
+
+    // Clamp selected index to valid range (avoids setState in useEffect)
+    const selectedIndex = useMemo(() => {
+        if (tasks.length === 0) return 0;
+        return Math.min(rawSelectedIndex, tasks.length - 1);
+    }, [rawSelectedIndex, tasks.length]);
+
+    // Wrapper to set index with bounds checking
+    const setSelectedIndex = useCallback((index: number) => {
+        setRawSelectedIndex(index);
+    }, []);
 
     const toggleVimMode = useCallback(() => {
         setVimEnabled((prev) => !prev);
@@ -94,13 +105,13 @@ export const useVimNavigation = ({
                 case "j":
                 case "arrowdown":
                     e.preventDefault();
-                    setSelectedIndex((prev) => Math.min(prev + 1, tasks.length - 1));
+                    setRawSelectedIndex((prev) => Math.min(prev + 1, tasks.length - 1));
                     break;
 
                 case "k":
                 case "arrowup":
                     e.preventDefault();
-                    setSelectedIndex((prev) => Math.max(prev - 1, 0));
+                    setRawSelectedIndex((prev) => Math.max(prev - 1, 0));
                     break;
 
                 case "g":
@@ -149,14 +160,7 @@ export const useVimNavigation = ({
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [enabled, vimEnabled, tasks, selectedIndex, onToggle, onUndo, gPressed, isTaskUnlocked, findFirstUnlockedIndex]);
-
-    // Keep selected index in bounds when tasks change
-    useEffect(() => {
-        if (selectedIndex >= tasks.length) {
-            setSelectedIndex(Math.max(0, tasks.length - 1));
-        }
-    }, [tasks.length, selectedIndex]);
+    }, [enabled, vimEnabled, tasks, selectedIndex, onToggle, onUndo, gPressed, isTaskUnlocked, findFirstUnlockedIndex, setSelectedIndex]);
 
     return {
         selectedIndex,
