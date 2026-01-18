@@ -327,6 +327,31 @@ export const GrowthContainer = ({
                 </div>
             </motion.div>
 
+            {/* XP Bar - Top Center */}
+            {gamification.isHydrated && (
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute top-4 left-1/2 -translate-x-1/2 z-20"
+                >
+                    <XpBar
+                        level={gamification.level}
+                        xp={gamification.xp}
+                        levelProgress={gamification.levelProgress}
+                        xpToNextLevel={gamification.xpToNextLevel}
+                        streak={gamification.streak}
+                        isCompact
+                    />
+                </motion.div>
+            )}
+
+            {/* XP Gain Indicator */}
+            <AnimatePresence>
+                {xpGain && (
+                    <XpGainIndicator xp={xpGain.xp} streakBonus={xpGain.streak} />
+                )}
+            </AnimatePresence>
+
             {/* Task Checklist Panel - Replaces FloatingTaskPanel */}
             <div className="absolute top-4 right-4 z-20 w-[420px]">
                 <TaskChecklist
